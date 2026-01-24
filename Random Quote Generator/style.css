@@ -1,0 +1,316 @@
+:root {
+    --primary-color: #4a90e2;
+    --secondary-color: #6c757d;
+    --bg-gradient: linear-gradient(120deg, #a1c4fd 0%, #c2e9fb 100%);
+    --box-bg: rgba(255, 255, 255, 0.65);
+    --text-color: #2c3e50;
+    --button-bg: #4a90e2;
+    --button-text: #fff;
+    --button-hover: #357abd;
+    --shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+    --header-footer-bg: rgba(255, 255, 255, 0.4);
+    --border: 1px solid rgba(255, 255, 255, 0.18);
+}
+
+[data-theme="dark"] {
+    --primary-color: #bb86fc;
+    --secondary-color: #b0b0b0;
+    --bg-gradient: linear-gradient(120deg, #0f2027 0%, #203a43 50%, #2c5364 100%);
+    --box-bg: rgba(20, 20, 20, 0.7);
+    --text-color: #e0e0e0;
+    --button-bg: #bb86fc;
+    --button-text: #121212;
+    --button-hover: #9b6dd3;
+    --shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.5);
+    --header-footer-bg: rgba(0, 0, 0, 0.3);
+    --border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    margin: 0;
+    min-height: 100vh;
+    background-image: var(--bg-gradient);
+    background-size: 200% 200%;
+    animation: gradientBG 15s ease infinite;
+    color: var(--text-color);
+    font-family: 'Poppins', 'Inter', sans-serif;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    transition: color 0.5s ease;
+}
+
+@keyframes gradientBG {
+    0% {
+        background-position: 0% 50%;
+    }
+
+    50% {
+        background-position: 100% 50%;
+    }
+
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
+/* Header */
+.main-header {
+    width: 100%;
+    padding: 15px 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: var(--header-footer-bg);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    /* Safari support */
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    border-bottom: var(--border);
+    position: fixed;
+    top: 0;
+    z-index: 1000;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 1.6rem;
+    font-weight: 800;
+    letter-spacing: -0.5px;
+    color: var(--text-color);
+}
+
+.logo i {
+    color: var(--primary-color);
+}
+
+/* Theme Toggle */
+.theme-btn {
+    background: transparent;
+    border: none;
+    font-size: 1.3rem;
+    color: var(--text-color);
+    cursor: pointer;
+    padding: 10px;
+    border-radius: 50%;
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.theme-btn:hover {
+    transform: rotate(25deg) scale(1.1);
+    background: rgba(128, 128, 128, 0.15);
+    color: var(--primary-color);
+}
+
+/* Main Content Area */
+.container {
+    padding-top: 100px;
+    padding-bottom: 80px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    flex-grow: 1;
+}
+
+.quote-box {
+    background: var(--box-bg);
+    width: 90%;
+    max-width: 750px;
+    padding: 50px;
+    border-radius: 24px;
+    box-shadow: var(--shadow);
+    text-align: center;
+    transition: all 0.5s ease;
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: var(--border);
+    position: relative;
+    overflow: hidden;
+}
+
+/* Typography */
+.quote-content {
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 30px;
+    line-height: 1.4;
+    position: relative;
+}
+
+.quote-icon {
+    font-size: 1.2rem;
+    color: var(--primary-color);
+    vertical-align: super;
+    opacity: 0.8;
+}
+
+.quote-text {
+    padding: 0 15px;
+}
+
+.long-quote {
+    font-size: 1.5rem;
+}
+
+.quote-author {
+    margin-top: 20px;
+    font-size: 1.1rem;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+    color: var(--secondary-color);
+    margin-bottom: 40px;
+}
+
+/* UI Elements */
+.buttons {
+    display: flex;
+    justify-content: center;
+    /* Centered buttons usually look better */
+    gap: 20px;
+    align-items: center;
+    margin-top: 20px;
+}
+
+.button {
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: 600;
+    border: none;
+    border-radius: 50px;
+    /* Pill shape */
+    color: var(--button-text);
+    background: var(--button-bg);
+    padding: 12px 30px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    text-decoration: none;
+    outline: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.button:hover {
+    background: var(--button-hover);
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+}
+
+.button:active {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+/* Loader */
+.loader {
+    border: 4px solid rgba(255, 255, 255, 0.3);
+    border-top: 4px solid var(--primary-color);
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    animation: spin 0.8s linear infinite;
+    margin: 0 auto;
+    display: none;
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+/* Animations */
+.animate-in {
+    animation: fadeInUp 0.8s cubic-bezier(0.23, 1, 0.32, 1) forwards;
+    opacity: 0;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px) scale(0.95);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+/* Footer */
+.main-footer {
+    width: 100%;
+    padding: 24px;
+    text-align: center;
+    background: var(--header-footer-bg);
+    backdrop-filter: blur(12px);
+    font-size: 0.9rem;
+    color: var(--secondary-color);
+    border-top: var(--border);
+}
+
+.social-links {
+    margin-top: 12px;
+}
+
+.social-links a {
+    color: var(--text-color);
+    margin: 0 12px;
+    font-size: 1.4rem;
+    transition: all 0.3s ease;
+    display: inline-block;
+}
+
+.social-links a:hover {
+    color: var(--primary-color);
+    transform: scale(1.2);
+}
+
+/* Responsive */
+@media screen and (max-width: 600px) {
+    .main-header {
+        padding: 12px 20px;
+    }
+
+    .logo {
+        font-size: 1.4rem;
+    }
+
+    .quote-content {
+        font-size: 1.5rem;
+    }
+
+    .long-quote {
+        font-size: 1.2rem;
+    }
+
+    .quote-box {
+        padding: 30px 20px;
+        width: 92%;
+    }
+
+    .button {
+        padding: 12px 24px;
+        font-size: 0.95rem;
+    }
+
+    .buttons {
+        gap: 15px;
+    }
+}
