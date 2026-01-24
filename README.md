@@ -1,4 +1,4 @@
-# ❝ QuoteGen - Random Quote Generator
+# ❝ QuoteGen - Random Quote Generator ❞
 
 A modern, responsive web application that generates random inspirational quotes. This project demonstrates asynchronous API handling, dynamic DOM manipulation, and modern CSS styling with a "Glassmorphism" aesthetic.
 
