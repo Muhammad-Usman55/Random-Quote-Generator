@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>html{background:#f8faff}html[data-theme=dark]{background:#09090f}</style>
+    <script>(function(){try{var t=localStorage.getItem('theme');if(t)document.documentElement.setAttribute('data-theme',t);}catch(e){}document.documentElement.classList.add('no-trans');var _sh=false;function _show(){if(_sh)return;_sh=true;document.documentElement.classList.remove('no-trans');if(document.body){document.body.style.transition='opacity 0.45s ease';void document.body.offsetWidth;document.body.style.opacity='1';}}setTimeout(_show,0);document.addEventListener('DOMContentLoaded',function(){requestAnimationFrame(_show);});window.addEventListener('load',_show);})()</script>
+    <title>Search Quotes — QuoteGen</title>
+    <meta name="description" content="Search quotes by keyword, author, or tag. Find who said it or explore quotes by topic.">
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Nastaliq+Urdu:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>tailwind.config = { corePlugins: { preflight: false } }</script>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="shared.css">
+    <link rel="stylesheet" href="search.css">
+</head>
+
+<body class="page-wrapper">
+
+    <!-- Header -->
+    <header class="main-header">
+        <a href="/home" class="logo" style="text-decoration:none">
+            <i class="fas fa-quote-right"></i>
+            <span>QuoteGen</span>
+        </a>
+        <nav id="nav-menu" class="nav-links" aria-label="Main navigation">
+            <a href="/home"     class="nav-link">Home</a>
+            <a href="/search"    class="nav-link">Search</a>
+            <a href="/about"     class="nav-link">About</a>
+            <a href="/favorites" class="nav-link">Favorites</a>
+            <a href="/contact"   class="nav-link">Contact</a>
+        </nav>
+        <div class="header-actions">
+            <div id="auth-slot"></div>
+            <button id="theme-toggle" class="theme-btn" aria-label="Toggle theme">
+                <i class="fas fa-moon"></i>
+            </button>
+            <button id="hamburger" class="hamburger" aria-label="Toggle menu" aria-expanded="false">
+                <span></span><span></span><span></span>
+            </button>
+        </div>
+    </header>
+
+    <main style="flex:1">
+
+        <!-- ── Page Hero ── -->
+        <section class="page-hero" style="padding-bottom:32px;">
+            <p style="color:var(--primary-color);font-size:0.85rem;font-weight:700;text-transform:uppercase;letter-spacing:2px;margin-bottom:10px;">
+                Explore &amp; Discover
+            </p>
+            <h1 class="page-hero-title">Search <span>Quotes</span></h1>
+            <p class="page-hero-sub">
+                Find who said it, explore by keyword, or browse by tag.
+            </p>
+        </section>
+
+        <!-- ── Search Controls ── -->
+        <section class="section-wrap" style="padding-top:0; padding-bottom:0;">
+
+            <!-- Main search box -->
+            <div class="search-hero-box glass-card">
+                <div class="search-input-wrap">
+                    <i class="fas fa-search search-input-icon"></i>
+                    <input
+                        id="search-input"
+                        class="search-hero-input"
+                        type="search"
+                        placeholder='Search quotes, authors, keywords… (e.g. "success", "Einstein")'
+                        autocomplete="off"
+                        aria-label="Search quotes"
+                    >
+                    <button id="clear-search" class="search-clear-btn" hidden aria-label="Clear search">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+
+                <!-- Language toggle -->
+                <div class="search-lang-row">
+                    <span style="font-size:0.82rem;color:var(--secondary-color);font-weight:600;">Language:</span>
+                    <button class="lang-pill lang-pill-active" data-lang="" id="lang-all">All</button>
+                    <button class="lang-pill" data-lang="en" id="lang-en">English</button>
+                    <button class="lang-pill" data-lang="ur" id="lang-ur">اردو</button>
+                </div>
+            </div>
+
+            <!-- Tag chips -->
+            <div class="tag-section">
+                <div class="tag-row">
+                    <span class="tag-row-label"><i class="fas fa-smile"></i> Mood</span>
+                    <div class="tag-chips">
+                        <button class="tag-chip" data-tag="happy"><i class="fas fa-smile"></i> Happy</button>
+                        <button class="tag-chip" data-tag="sad"><i class="fas fa-cloud-rain"></i> Sad</button>
+                        <button class="tag-chip" data-tag="motivational"><i class="fas fa-fire"></i> Motivational</button>
+                        <button class="tag-chip" data-tag="inspiring"><i class="fas fa-star"></i> Inspiring</button>
+                        <button class="tag-chip" data-tag="peaceful"><i class="fas fa-leaf"></i> Peaceful</button>
+                        <button class="tag-chip" data-tag="funny"><i class="fas fa-laugh"></i> Funny</button>
+                    </div>
+                </div>
+                <div class="tag-row" style="margin-top:10px;">
+                    <span class="tag-row-label"><i class="fas fa-tag"></i> Topic</span>
+                    <div class="tag-chips">
+                        <button class="tag-chip" data-tag="love"><i class="fas fa-heart"></i> Love</button>
+                        <button class="tag-chip" data-tag="life"><i class="fas fa-seedling"></i> Life</button>
+                        <button class="tag-chip" data-tag="success"><i class="fas fa-trophy"></i> Success</button>
+                        <button class="tag-chip" data-tag="wisdom"><i class="fas fa-lightbulb"></i> Wisdom</button>
+                        <button class="tag-chip" data-tag="friendship"><i class="fas fa-user-friends"></i> Friendship</button>
+                        <button class="tag-chip" data-tag="education"><i class="fas fa-graduation-cap"></i> Education</button>
+                        <button class="tag-chip" data-tag="faith"><i class="fas fa-praying-hands"></i> Faith</button>
+                        <button class="tag-chip" data-tag="nature"><i class="fas fa-tree"></i> Nature</button>
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+        <!-- ── Results area ── -->
+        <section class="section-wrap" style="padding-top:24px; padding-bottom:64px;">
+
+            <!-- Author lookup banner (shown when exact quote match found) -->
+            <div id="author-banner" class="author-banner" hidden>
+                <div class="author-banner-icon"><i class="fas fa-user-circle"></i></div>
+                <div>
+                    <div class="author-banner-label">Quote by</div>
+                    <div class="author-banner-name" id="author-banner-name"></div>
+                </div>
+            </div>
+
+            <!-- Status line -->
+            <div id="search-status" class="search-status"></div>
+
+            <!-- Loading spinner -->
+            <div id="search-spinner" style="text-align:center;padding:60px 20px;" hidden>
+                <i class="fas fa-spinner fa-spin" style="font-size:2.2rem;color:var(--primary-color);"></i>
+                <p style="margin-top:12px;color:var(--secondary-color);">Searching…</p>
+            </div>
+
+            <!-- Empty state (initial prompt) -->
+            <div id="search-empty" class="search-empty-state">
+                <i class="fas fa-search"></i>
+                <h3>Start Searching</h3>
+                <p>Type a keyword, paste a quote to find its author,<br>or click any tag above to browse by topic.</p>
+            </div>
+
+            <!-- No-results state -->
+            <div id="search-no-results" class="search-empty-state" hidden>
+                <i class="fas fa-sad-tear"></i>
+                <h3>No Results Found</h3>
+                <p>Try a different keyword or select a different tag.</p>
+            </div>
+
+            <!-- Results grid -->
+            <div id="search-results" class="favorites-grid" hidden></div>
+
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="site-footer">
+        <div class="footer-inner">
+            <div class="footer-grid">
+
+                <div class="footer-brand">
+                    <a href="/home" class="logo">
+                        <i class="fas fa-quote-right"></i>
+                        <span>QuoteGen</span>
+                    </a>
+                    <p class="footer-brand-desc">
+                        A modern bilingual quote generator celebrating wisdom in
+                        English and Urdu. Find inspiration, save your favorites,
+                        and share what moves you.
+                    </p>
+                    <div class="footer-social-row">
+                        <a href="https://github.com/Muhammad-Usman55" target="_blank" rel="noopener" aria-label="GitHub">
+                            <i class="fab fa-github"></i>
+                        </a>
+                        <a href="https://www.linkedin.com/in/muhammadusman55/" target="_blank" rel="noopener" aria-label="LinkedIn">
+                            <i class="fab fa-linkedin"></i>
+                        </a>
+                        <a href="mailto:usmanshahidhnd2108@gmail.com" aria-label="Email">
+                            <i class="fas fa-envelope"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <div>
+                    <p class="footer-col-title">Quick Links</p>
+                    <ul class="footer-links">
+                        <li><a href="/home"><i class="fas fa-home fa-xs"></i> Home</a></li>
+                        <li><a href="/search"><i class="fas fa-search fa-xs"></i> Search</a></li>
+                        <li><a href="/about"><i class="fas fa-info-circle fa-xs"></i> About</a></li>
+                        <li><a href="/favorites"><i class="fas fa-heart fa-xs"></i> Favorites</a></li>
+                        <li><a href="/contact"><i class="fas fa-envelope fa-xs"></i> Contact</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <p class="footer-col-title">Browse by Tag</p>
+                    <ul class="footer-links">
+                        <li><a href="/search?tag=success">Success</a></li>
+                        <li><a href="/search?tag=love">Love</a></li>
+                        <li><a href="/search?tag=wisdom">Wisdom</a></li>
+                        <li><a href="/search?tag=motivational">Motivational</a></li>
+                        <li><a href="/search?tag=friendship">Friendship</a></li>
+                    </ul>
+                </div>
+
+            </div>
+
+            <div class="footer-bottom">
+                <p>&copy; 2026 QuoteGen by Muhammad Usman Shahid. All rights reserved.</p>
+                <p style="display:flex; align-items:center; gap:8px;">
+                    <i class="fas fa-star" style="color:var(--primary-color); font-size:0.75rem;"></i>
+                    Inspiring minds, one quote at a time
+                    <i class="fas fa-star" style="color:var(--primary-color); font-size:0.75rem;"></i>
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="auth.js"></script>
+    <script src="shared.js"></script>
+    <script src="search.js"></script>
+</body>
+
+</html>

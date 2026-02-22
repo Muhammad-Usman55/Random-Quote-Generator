@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>html{background:#f8faff}html[data-theme=dark]{background:#09090f}</style>
+    <script>(function(){try{var t=localStorage.getItem('theme');if(t)document.documentElement.setAttribute('data-theme',t);}catch(e){}document.documentElement.classList.add('no-trans');var _sh=false;function _show(){if(_sh)return;_sh=true;document.documentElement.classList.remove('no-trans');if(document.body){document.body.style.transition='opacity 0.45s ease';void document.body.offsetWidth;document.body.style.opacity='1';}}setTimeout(_show,0);document.addEventListener('DOMContentLoaded',function(){requestAnimationFrame(_show);});window.addEventListener('load',_show);})()</script>
+    <title>Admin Panel — QuoteGen</title>
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="admin.css">
+</head>
+
+<body>
+
+<!-- ─── LOGIN SCREEN ─────────────────────────────────────────── -->
+<div id="login-screen" class="admin-login-screen">
+    <div class="admin-login-card">
+        <div class="admin-login-icon">
+            <i class="fas fa-shield-alt"></i>
+        </div>
+        <h1 class="admin-login-title">Admin Access</h1>
+        <p class="admin-login-sub">Enter your credentials to continue.</p>
+        <input id="admin-uname" class="admin-login-input" type="text"
+               placeholder="Username" autocomplete="username" aria-label="Admin username">
+        <input id="admin-pw" class="admin-login-input" type="password"
+               placeholder="••••••••••" autocomplete="off" aria-label="Admin password">
+        <button id="admin-login-btn" class="admin-login-btn">
+            <i class="fas fa-sign-in-alt"></i> Log In to Admin Panel
+        </button>
+        <div id="login-err" class="admin-login-error" hidden></div>
+    </div>
+</div>
+
+<!-- ─── DASHBOARD ────────────────────────────────────────────── -->
+<div id="dashboard" class="admin-wrapper" hidden>
+
+    <!-- Top Bar -->
+    <header class="admin-topbar">
+        <a href="/home" class="admin-topbar-left" style="text-decoration:none">
+            <i class="fas fa-quote-right"></i>
+            <span>QuoteGen</span>
+            <span class="admin-topbar-badge">Admin</span>
+        </a>
+        <div class="admin-topbar-right">
+            <button id="theme-toggle-admin" class="theme-btn" aria-label="Toggle theme">
+                <i class="fas fa-moon"></i>
+            </button>
+            <button id="admin-logout-btn" class="admin-logout-btn">
+                <i class="fas fa-sign-out-alt"></i> Logout
+            </button>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <div class="admin-main" style="margin-top:62px; padding-top:24px;">
+
+        <!-- Tab Nav -->
+        <div class="admin-tabs" role="tablist">
+            <button class="admin-tab active" data-tab="overview" role="tab">
+                <i class="fas fa-chart-line"></i> Overview
+            </button>
+            <button class="admin-tab" data-tab="users" role="tab">
+                <i class="fas fa-users"></i> Users
+            </button>
+            <button class="admin-tab" data-tab="quotes" role="tab">
+                <i class="fas fa-quote-right"></i> Quotes DB
+            </button>
+            <button class="admin-tab" data-tab="messages" role="tab">
+                <i class="fas fa-envelope"></i> Messages
+                <span id="unread-badge" class="admin-tab-badge" hidden>0</span>
+            </button>
+            <button class="admin-tab" data-tab="settings" role="tab">
+                <i class="fas fa-cog"></i> Settings
+            </button>
+        </div>
+
+        <!-- ─── OVERVIEW TAB ─────────────────────────────────── -->
+        <div id="tab-overview" class="admin-panel active">
+
+            <!-- Stat Cards -->
+            <div class="stat-cards" id="stat-cards">
+                <div class="stat-card">
+                    <div class="stat-card-icon"><i class="fas fa-users"></i></div>
+                    <div class="stat-card-value" id="s-total-users">—</div>
+                    <div class="stat-card-label">Total Users</div>
+                    <div class="stat-card-sub" id="s-new-users"></div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-card-icon" style="background:linear-gradient(135deg,#2ecc71,#1abc9c)"><i class="fas fa-user-check"></i></div>
+                    <div class="stat-card-value" id="s-verified">—</div>
+                    <div class="stat-card-label">Verified Users</div>
+                    <div class="stat-card-sub" id="s-providers"></div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-card-icon" style="background:linear-gradient(135deg,#e84393,#f4511e)"><i class="fas fa-database"></i></div>
+                    <div class="stat-card-value" id="s-db-quotes">—</div>
+                    <div class="stat-card-label">Quotes in DB</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-card-icon" style="background:linear-gradient(135deg,#f39c12,#e67e22)"><i class="fas fa-heart"></i></div>
+                    <div class="stat-card-value" id="s-saved">—</div>
+                    <div class="stat-card-label">Saved Quotes</div>
+                    <div class="stat-card-sub" id="s-liked"></div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-card-icon" style="background:linear-gradient(135deg,#e74c3c,#c0392b)"><i class="fas fa-envelope"></i></div>
+                    <div class="stat-card-value" id="s-msgs">—</div>
+                    <div class="stat-card-label">Contact Messages</div>
+                    <div class="stat-card-sub" id="s-unread"></div>
+                </div>
+            </div>
+
+            <!-- Row 1: Time-series charts -->
+            <div class="charts-row">
+                <div class="chart-card">
+                    <div class="chart-card-title">
+                        <i class="fas fa-user-plus"></i> User Registrations (Last 30 days)
+                    </div>
+                    <div class="chart-canvas-wrap" style="height:220px">
+                        <canvas id="chart-reg"></canvas>
+                    </div>
+                </div>
+                <div class="chart-card">
+                    <div class="chart-card-title">
+                        <i class="fas fa-bookmark"></i> Saved Quote Activity (Last 30 days)
+                    </div>
+                    <div class="chart-canvas-wrap" style="height:220px">
+                        <canvas id="chart-saved"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Row 2: Top authors + distribution charts -->
+            <div class="charts-row-3">
+                <div class="chart-card">
+                    <div class="chart-card-title">
+                        <i class="fas fa-star"></i> Top 10 Saved Authors
+                    </div>
+                    <div class="chart-canvas-wrap" style="height:240px">
+                        <canvas id="chart-authors"></canvas>
+                    </div>
+                </div>
+                <div class="chart-card">
+                    <div class="chart-card-title">
+                        <i class="fas fa-smile"></i> Mood Distribution
+                    </div>
+                    <div class="chart-canvas-wrap" style="height:240px">
+                        <canvas id="chart-moods"></canvas>
+                    </div>
+                </div>
+                <div class="chart-card">
+                    <div class="chart-card-title">
+                        <i class="fas fa-tag"></i> Topic Distribution
+                    </div>
+                    <div class="chart-canvas-wrap" style="height:240px">
+                        <canvas id="chart-topics"></canvas>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <!-- ─── END OVERVIEW TAB ─────────────────────────────── -->
+
+        <!-- ─── USERS TAB ────────────────────────────────────── -->
+        <div id="tab-users" class="admin-panel">
+
+            <div class="admin-toolbar">
+                <div class="admin-search-wrap">
+                    <i class="fas fa-search"></i>
+                    <input id="user-search" class="admin-search" type="text"
+                           placeholder="Search by username or email…">
+                </div>
+            </div>
+
+            <div class="table-wrap">
+                <table class="admin-table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Username</th>
+                            <th>Email</th>
+                            <th>Provider</th>
+                            <th>Verified</th>
+                            <th>Saved</th>
+                            <th>Liked</th>
+                            <th>Joined</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="users-tbody">
+                        <tr><td colspan="9"><div class="admin-empty"><i class="fas fa-spinner fa-spin"></i><p>Loading…</p></div></td></tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="pagination" id="users-pagination"></div>
+
+        </div>
+        <!-- ─── END USERS TAB ────────────────────────────────── -->
+
+        <!-- ─── QUOTES TAB ───────────────────────────────────── -->
+        <div id="tab-quotes" class="admin-panel">
+
+            <div class="admin-toolbar">
+                <div class="admin-search-wrap">
+                    <i class="fas fa-search"></i>
+                    <input id="quote-search" class="admin-search" type="text"
+                           placeholder="Search by quote text or author…">
+                </div>
+                <select id="quote-filter-lang" class="admin-filter-select">
+                    <option value="">All Languages</option>
+                    <option value="en">English</option>
+                    <option value="ur">Urdu</option>
+                </select>
+                <select id="quote-filter-mood" class="admin-filter-select">
+                    <option value="">All Moods</option>
+                    <option value="happy">Happy</option>
+                    <option value="sad">Sad</option>
+                    <option value="motivational">Motivational</option>
+                    <option value="inspiring">Inspiring</option>
+                    <option value="peaceful">Peaceful</option>
+                    <option value="funny">Funny</option>
+                </select>
+                <select id="quote-filter-topic" class="admin-filter-select">
+                    <option value="">All Topics</option>
+                    <option value="love">Love</option>
+                    <option value="life">Life</option>
+                    <option value="success">Success</option>
+                    <option value="wisdom">Wisdom</option>
+                    <option value="friendship">Friendship</option>
+                    <option value="education">Education</option>
+                    <option value="faith">Faith</option>
+                    <option value="nature">Nature</option>
+                </select>
+                <button id="add-quote-btn" class="btn-admin-primary">
+                    <i class="fas fa-plus"></i> Add Quote
+                </button>
+            </div>
+
+            <div class="table-wrap">
+                <table class="admin-table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Quote</th>
+                            <th>Author</th>
+                            <th>Lang</th>
+                            <th>Mood</th>
+                            <th>Topic</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="quotes-tbody">
+                        <tr><td colspan="7"><div class="admin-empty"><i class="fas fa-spinner fa-spin"></i><p>Loading…</p></div></td></tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="pagination" id="quotes-pagination"></div>
+
+        </div>
+        <!-- ─── END QUOTES TAB ───────────────────────────────── -->
+
+        <!-- ─── MESSAGES TAB ─────────────────────────────────── -->
+        <div id="tab-messages" class="admin-panel">
+
+            <div class="admin-toolbar">
+                <label style="display:inline-flex;align-items:center;gap:8px;font-size:0.86rem;font-weight:600;color:var(--secondary-color);cursor:pointer;">
+                    <input type="checkbox" id="unread-only-toggle" style="width:16px;height:16px;accent-color:var(--primary-color);">
+                    Show unread only
+                </label>
+            </div>
+
+            <div class="table-wrap">
+                <table class="admin-table">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Subject</th>
+                            <th>Date</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="msgs-tbody">
+                        <tr><td colspan="6"><div class="admin-empty"><i class="fas fa-spinner fa-spin"></i><p>Loading…</p></div></td></tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="pagination" id="msgs-pagination"></div>
+
+        </div>
+        <!-- ─── END MESSAGES TAB ─────────────────────────────── -->
+
+        <!-- ─── SETTINGS TAB ─────────────────────────────────── -->
+        <div id="tab-settings" class="admin-panel">
+
+            <div class="settings-grid">
+
+                <!-- Change Admin Password -->
+                <div class="settings-card">
+                    <div class="settings-card-header">
+                        <div class="settings-card-icon">
+                            <i class="fas fa-key"></i>
+                        </div>
+                        <h3>Change Admin Password</h3>
+                    </div>
+                    <p class="settings-card-desc">
+                        Update the password used to access this admin panel.
+                        Changes take effect immediately and are saved to <code>.env</code>.
+                    </p>
+                    <div class="admin-form-group">
+                        <label class="admin-form-label">Current Password</label>
+                        <input id="set-current-pw" class="admin-form-input" type="password"
+                               placeholder="Enter current admin password" autocomplete="off">
+                    </div>
+                    <div class="admin-form-group">
+                        <label class="admin-form-label">New Password</label>
+                        <input id="set-new-pw" class="admin-form-input" type="password"
+                               placeholder="Minimum 8 characters" autocomplete="new-password">
+                    </div>
+                    <div class="admin-form-group">
+                        <label class="admin-form-label">Confirm New Password</label>
+                        <input id="set-confirm-pw" class="admin-form-input" type="password"
+                               placeholder="Re-enter new password" autocomplete="new-password">
+                    </div>
+                    <div id="set-pw-msg" class="settings-msg" hidden></div>
+                    <button id="submit-change-pw" class="btn-admin-primary" style="margin-top:4px;">
+                        <i class="fas fa-save"></i> Update Password
+                    </button>
+                </div>
+
+                <!-- Security Info Card -->
+                <div class="settings-card">
+                    <div class="settings-card-header">
+                        <div class="settings-card-icon" style="background:linear-gradient(135deg,#2ecc71,#1abc9c)">
+                            <i class="fas fa-shield-alt"></i>
+                        </div>
+                        <h3>Security Notes</h3>
+                    </div>
+                    <p class="settings-card-desc">Important information about admin panel security.</p>
+                    <ul class="settings-info-list">
+                        <li><i class="fas fa-check-circle"></i> Admin session is stored in <strong>sessionStorage</strong> — auto-expires when the browser tab is closed.</li>
+                        <li><i class="fas fa-check-circle"></i> Admin tokens are separate from user tokens and expire after <strong>4 hours</strong>.</li>
+                        <li><i class="fas fa-check-circle"></i> Password changes are persisted to <strong>.env</strong> and take effect immediately.</li>
+                        <li><i class="fas fa-exclamation-triangle"></i> This panel is not linked from any public page — keep the URL private.</li>
+                        <li><i class="fas fa-exclamation-triangle"></i> Google OAuth users cannot have their passwords reset (they have no password).</li>
+                    </ul>
+                </div>
+
+            </div>
+        </div>
+        <!-- ─── END SETTINGS TAB ──────────────────────────────── -->
+
+    </div><!-- /admin-main -->
+</div><!-- /dashboard -->
+
+<!-- ─── ADD QUOTE MODAL ──────────────────────────────────────── -->
+<div id="add-quote-modal" class="admin-modal" hidden>
+    <div class="admin-modal-box">
+        <button class="admin-modal-close" id="close-add-quote">&times;</button>
+        <div class="admin-modal-title">
+            <i class="fas fa-plus-circle"></i> Add Quote to Database
+        </div>
+        <div class="admin-form-group">
+            <label class="admin-form-label">Quote Text *</label>
+            <textarea id="new-quote-text" class="admin-form-textarea" placeholder="Enter the quote…" rows="3"></textarea>
+        </div>
+        <div class="admin-form-group">
+            <label class="admin-form-label">Author</label>
+            <input id="new-quote-author" class="admin-form-input" type="text" placeholder="Unknown">
+        </div>
+        <div class="admin-form-row">
+            <div class="admin-form-group">
+                <label class="admin-form-label">Language</label>
+                <select id="new-quote-lang" class="admin-form-select">
+                    <option value="en">English</option>
+                    <option value="ur">Urdu</option>
+                </select>
+            </div>
+            <div class="admin-form-group">
+                <label class="admin-form-label">Mood</label>
+                <select id="new-quote-mood" class="admin-form-select">
+                    <option value="">— None —</option>
+                    <option value="happy">Happy</option>
+                    <option value="sad">Sad</option>
+                    <option value="motivational">Motivational</option>
+                    <option value="inspiring">Inspiring</option>
+                    <option value="peaceful">Peaceful</option>
+                    <option value="funny">Funny</option>
+                </select>
+            </div>
+        </div>
+        <div class="admin-form-group">
+            <label class="admin-form-label">Topic</label>
+            <select id="new-quote-topic" class="admin-form-select">
+                <option value="">— None —</option>
+                <option value="love">Love</option>
+                <option value="life">Life</option>
+                <option value="success">Success</option>
+                <option value="wisdom">Wisdom</option>
+                <option value="friendship">Friendship</option>
+                <option value="education">Education</option>
+                <option value="faith">Faith</option>
+                <option value="nature">Nature</option>
+            </select>
+        </div>
+        <div id="add-quote-err" style="color:#e74c3c;font-size:0.84rem;margin-top:4px;" hidden></div>
+        <div class="admin-modal-footer">
+            <button class="btn-admin-ghost" id="cancel-add-quote">Cancel</button>
+            <button class="btn-admin-primary" id="submit-add-quote">
+                <i class="fas fa-save"></i> Save Quote
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- ─── MESSAGE VIEW MODAL ───────────────────────────────────── -->
+<div id="msg-view-modal" class="admin-modal" hidden>
+    <div class="admin-modal-box">
+        <button class="admin-modal-close" id="close-msg-view">&times;</button>
+        <div class="admin-modal-title">
+            <i class="fas fa-envelope-open-text"></i> Contact Message
+        </div>
+        <div style="margin-bottom:16px;">
+            <div style="font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:0.8px;color:var(--secondary-color);margin-bottom:4px;">From</div>
+            <div id="mv-from" style="font-weight:600;color:var(--text-color);"></div>
+            <div id="mv-email" style="font-size:0.84rem;color:var(--primary-color);"></div>
+        </div>
+        <div style="margin-bottom:16px;">
+            <div style="font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:0.8px;color:var(--secondary-color);margin-bottom:4px;">Subject</div>
+            <div id="mv-subject" style="font-weight:600;color:var(--text-color);"></div>
+        </div>
+        <div style="margin-bottom:16px;">
+            <div style="font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:0.8px;color:var(--secondary-color);margin-bottom:8px;">Message</div>
+            <div id="mv-message" style="font-size:0.9rem;color:var(--text-color);line-height:1.75;background:rgba(74,144,226,0.05);border:var(--border);border-radius:12px;padding:16px;white-space:pre-wrap;"></div>
+        </div>
+        <div style="font-size:0.78rem;color:var(--secondary-color);" id="mv-date"></div>
+    </div>
+</div>
+
+<!-- ─── RESET USER PASSWORD MODAL ────────────────────────── -->
+<div id="reset-pw-modal" class="admin-modal" hidden>
+    <div class="admin-modal-box">
+        <button class="admin-modal-close" id="close-reset-pw">&times;</button>
+        <div class="admin-modal-title">
+            <i class="fas fa-key"></i> Reset User Password
+        </div>
+        <p id="reset-pw-for" style="font-size:0.88rem;color:var(--secondary-color);margin-bottom:20px;padding:10px 14px;background:rgba(74,144,226,0.06);border-radius:10px;border:var(--border);"></p>
+        <div class="admin-form-group">
+            <label class="admin-form-label">New Password</label>
+            <input id="reset-pw-new" class="admin-form-input" type="password"
+                   placeholder="Enter new password (min. 6 chars)" autocomplete="new-password">
+        </div>
+        <div id="reset-pw-err" style="color:#e74c3c;font-size:0.84rem;margin-bottom:8px;" hidden></div>
+        <div class="admin-modal-footer">
+            <button class="btn-admin-ghost" id="cancel-reset-pw">Cancel</button>
+            <button class="btn-admin-primary" id="submit-reset-pw">
+                <i class="fas fa-key"></i> Reset Password
+            </button>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Apply saved theme immediately to prevent flash
+    const _t = localStorage.getItem('theme');
+    if (_t) document.documentElement.setAttribute('data-theme', _t);
+</script>
+<script src="admin.js"></script>
+</body>
+</html>

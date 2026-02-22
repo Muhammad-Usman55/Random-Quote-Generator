@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>html{background:#f8faff}html[data-theme=dark]{background:#09090f}</style>
+    <script>(function(){try{var t=localStorage.getItem('theme');if(t)document.documentElement.setAttribute('data-theme',t);}catch(e){}document.documentElement.classList.add('no-trans');var _sh=false;function _show(){if(_sh)return;_sh=true;document.documentElement.classList.remove('no-trans');if(document.body){document.body.style.transition='opacity 0.45s ease';void document.body.offsetWidth;document.body.style.opacity='1';}}setTimeout(_show,0);document.addEventListener('DOMContentLoaded',function(){requestAnimationFrame(_show);});window.addEventListener('load',_show);})()</script>
+    <title>My Saved Quotes — QuoteGen</title>
+    <meta name="description" content="View and manage your saved favorite quotes on QuoteGen.">
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Nastaliq+Urdu:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>tailwind.config = { corePlugins: { preflight: false } }</script>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="shared.css">
+</head>
+
+<body class="page-wrapper">
+<script>if (!localStorage.getItem('qg_access')) window.location.replace('/login?next=/favorites');</script>
+
+    <!-- Header -->
+    <header class="main-header">
+        <a href="/home" class="logo" style="text-decoration:none">
+            <i class="fas fa-quote-right"></i>
+            <span>QuoteGen</span>
+        </a>
+        <nav id="nav-menu" class="nav-links" aria-label="Main navigation">
+            <a href="/home"     class="nav-link">Home</a>
+            <a href="/search"    class="nav-link">Search</a>
+            <a href="/about"     class="nav-link">About</a>
+            <a href="/favorites" class="nav-link">Favorites</a>
+            <a href="/contact"   class="nav-link">Contact</a>
+        </nav>
+        <div class="header-actions">
+            <div id="auth-slot"></div>
+            <button id="theme-toggle" class="theme-btn" aria-label="Toggle theme">
+                <i class="fas fa-moon"></i>
+            </button>
+            <button id="hamburger" class="hamburger" aria-label="Toggle menu" aria-expanded="false">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </div>
+    </header>
+
+    <main style="flex:1">
+
+        <!-- Page Hero -->
+        <section class="page-hero">
+            <p style="color:var(--primary-color); font-size:0.85rem; font-weight:700; text-transform:uppercase; letter-spacing:2px; margin-bottom:10px;">
+                Your Collection
+            </p>
+            <h1 class="page-hero-title">
+                Saved <span>Quotes</span>
+            </h1>
+            <p class="page-hero-sub">
+                All the quotes you've saved from the generator, in one place.
+                Search, share, or export your collection anytime.
+            </p>
+        </section>
+
+        <!-- Controls + Grid -->
+        <section class="section-wrap" style="padding-bottom:64px;">
+
+            <!-- Controls bar -->
+            <div class="favorites-controls">
+                <input
+                    id="search-favorites"
+                    class="search-input"
+                    type="search"
+                    placeholder="Search quotes or authors..."
+                    aria-label="Search favorites"
+                >
+                <span id="favorites-count" class="favorites-count-label"></span>
+                <button id="export-btn" class="button" aria-label="Export favorites as text file">
+                    <i class="fas fa-download"></i> Export .txt
+                </button>
+                <button id="clear-all-btn" class="button btn-danger" aria-label="Clear all favorites">
+                    <i class="fas fa-trash"></i> Clear All
+                </button>
+            </div>
+
+            <!-- Favorites grid (populated by favorites.js) -->
+            <div id="favorites-grid" class="favorites-grid">
+                <!-- Cards rendered here -->
+            </div>
+
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="site-footer">
+        <div class="footer-inner">
+            <div class="footer-grid">
+
+                <div class="footer-brand">
+                    <a href="/home" class="logo">
+                        <i class="fas fa-quote-right"></i>
+                        <span>QuoteGen</span>
+                    </a>
+                    <p class="footer-brand-desc">
+                        A modern bilingual quote generator celebrating wisdom in
+                        English and Urdu. Find inspiration, save your favorites,
+                        and share what moves you.
+                    </p>
+                    <div class="footer-social-row">
+                        <a href="https://github.com/Muhammad-Usman55" target="_blank" rel="noopener" aria-label="GitHub">
+                            <i class="fab fa-github"></i>
+                        </a>
+                        <a href="https://www.linkedin.com/in/muhammadusman55/" target="_blank" rel="noopener" aria-label="LinkedIn">
+                            <i class="fab fa-linkedin"></i>
+                        </a>
+                        <a href="mailto:usmanshahidhnd2108@gmail.com" aria-label="Email">
+                            <i class="fas fa-envelope"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <div>
+                    <p class="footer-col-title">Quick Links</p>
+                    <ul class="footer-links">
+                        <li><a href="/home"><i class="fas fa-home fa-xs"></i> Home</a></li>
+                        <li><a href="/about"><i class="fas fa-info-circle fa-xs"></i> About</a></li>
+                        <li><a href="/favorites"><i class="fas fa-heart fa-xs"></i> Favorites</a></li>
+                        <li><a href="/contact"><i class="fas fa-envelope fa-xs"></i> Contact</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <p class="footer-col-title">Features</p>
+                    <ul class="footer-links">
+                        <li><a href="/home">English Quotes</a></li>
+                        <li><a href="/home">Urdu Quotes</a></li>
+                        <li><a href="/home">Text to Speech</a></li>
+                        <li><a href="/favorites">Save Favorites</a></li>
+                        <li><a href="/home">Social Sharing</a></li>
+                    </ul>
+                </div>
+
+            </div>
+
+            <div class="footer-bottom">
+                <p>&copy; 2026 QuoteGen by Muhammad Usman Shahid. All rights reserved.</p>
+                <p style="display:flex; align-items:center; gap:8px;">
+                    <i class="fas fa-star" style="color:var(--primary-color); font-size:0.75rem;"></i>
+                    Inspiring minds, one quote at a time
+                    <i class="fas fa-star" style="color:var(--primary-color); font-size:0.75rem;"></i>
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="auth.js"></script>
+    <script src="shared.js"></script>
+    <script src="favorites.js"></script>
+</body>
+
+</html>

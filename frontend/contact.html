@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>html{background:#f8faff}html[data-theme=dark]{background:#09090f}</style>
+    <script>(function(){try{var t=localStorage.getItem('theme');if(t)document.documentElement.setAttribute('data-theme',t);}catch(e){}document.documentElement.classList.add('no-trans');var _sh=false;function _show(){if(_sh)return;_sh=true;document.documentElement.classList.remove('no-trans');if(document.body){document.body.style.transition='opacity 0.45s ease';void document.body.offsetWidth;document.body.style.opacity='1';}}setTimeout(_show,0);document.addEventListener('DOMContentLoaded',function(){requestAnimationFrame(_show);});window.addEventListener('load',_show);})()</script>
+    <title>Contact — QuoteGen</title>
+    <meta name="description" content="Get in touch with the QuoteGen team. Send a message, report a bug, or share a feature idea.">
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Nastaliq+Urdu:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>tailwind.config = { corePlugins: { preflight: false } }</script>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="shared.css">
+</head>
+
+<body class="page-wrapper">
+
+    <!-- Header -->
+    <header class="main-header">
+        <a href="/home" class="logo" style="text-decoration:none">
+            <i class="fas fa-quote-right"></i>
+            <span>QuoteGen</span>
+        </a>
+        <nav id="nav-menu" class="nav-links" aria-label="Main navigation">
+            <a href="/home"     class="nav-link">Home</a>
+            <a href="/search"    class="nav-link">Search</a>
+            <a href="/about"     class="nav-link">About</a>
+            <a href="/favorites" class="nav-link">Favorites</a>
+            <a href="/contact"   class="nav-link">Contact</a>
+        </nav>
+        <div class="header-actions">
+            <div id="auth-slot"></div>
+            <button id="theme-toggle" class="theme-btn" aria-label="Toggle theme">
+                <i class="fas fa-moon"></i>
+            </button>
+            <button id="hamburger" class="hamburger" aria-label="Toggle menu" aria-expanded="false">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </div>
+    </header>
+
+    <main style="flex:1">
+
+        <!-- Page Hero -->
+        <section class="page-hero">
+            <p style="color:var(--primary-color); font-size:0.85rem; font-weight:700; text-transform:uppercase; letter-spacing:2px; margin-bottom:10px;">
+                Reach Out
+            </p>
+            <h1 class="page-hero-title">
+                Get in <span>Touch</span>
+            </h1>
+            <p class="page-hero-sub">
+                Have feedback, a feature idea, or just want to say hello?
+                I'd love to hear from you.
+            </p>
+        </section>
+
+        <!-- Contact Section -->
+        <section class="section-wrap" style="padding-bottom:64px;">
+            <div class="contact-grid">
+
+                <!-- LEFT: Contact Form -->
+                <div class="glass-card">
+                    <h2 class="section-title">Send a Message</h2>
+                    <p class="section-subtitle">
+                        Fill in the form below and I'll respond as soon as possible.
+                    </p>
+
+                    <form id="contact-form" novalidate>
+
+                        <div class="form-group">
+                            <label class="form-label" for="name">Full Name *</label>
+                            <input
+                                id="name"
+                                class="form-input"
+                                type="text"
+                                placeholder="Muhammad Usman Shahid"
+                                autocomplete="name"
+                                aria-describedby="name-error"
+                            >
+                            <span id="name-error" class="error-msg" role="alert"></span>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label" for="email">Email Address *</label>
+                            <input
+                                id="email"
+                                class="form-input"
+                                type="email"
+                                placeholder="you@example.com"
+                                autocomplete="email"
+                                aria-describedby="email-error"
+                            >
+                            <span id="email-error" class="error-msg" role="alert"></span>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label" for="subject">Subject *</label>
+                            <input
+                                id="subject"
+                                class="form-input"
+                                type="text"
+                                placeholder="Feature request, bug report, feedback..."
+                                aria-describedby="subject-error"
+                            >
+                            <span id="subject-error" class="error-msg" role="alert"></span>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label" for="message">Message *</label>
+                            <textarea
+                                id="message"
+                                class="form-input"
+                                placeholder="Write your message here (at least 20 characters)..."
+                                aria-describedby="message-error"
+                            ></textarea>
+                            <span id="message-error" class="error-msg" role="alert"></span>
+                        </div>
+
+                        <button type="submit" class="button" style="width:100%; justify-content:center; padding:14px 24px; font-size:0.96rem; border-radius:14px;">
+                            <i class="fas fa-paper-plane"></i>&nbsp; Send Message
+                        </button>
+
+                    </form>
+
+                    <!-- Success state (hidden initially) -->
+                    <div id="success-msg" class="success-box" hidden>
+                        <i class="fas fa-check-circle"></i>
+                        <h3>Message Sent!</h3>
+                        <p>
+                            Thank you for reaching out. I'll get back to you
+                            at your email as soon as possible.
+                        </p>
+                        <a href="/home" class="button" style="display:inline-flex; margin-top:18px;">
+                            <i class="fas fa-home"></i>&nbsp; Back to Home
+                        </a>
+                    </div>
+                </div>
+
+                <!-- RIGHT: Contact Info Cards -->
+                <div>
+                    <h2 class="section-title">Contact Info</h2>
+                    <p class="section-subtitle">
+                        Prefer to reach out directly? Use any of the options below.
+                    </p>
+
+                    <a href="mailto:usmanshahidhnd2108@gmail.com"
+                       class="glass-card contact-info-card">
+                        <div class="contact-icon-circle">
+                            <i class="fas fa-envelope"></i>
+                        </div>
+                        <div>
+                            <p class="contact-card-label">Email</p>
+                            <p class="contact-card-value">usmanshahidhnd2108@gmail.com</p>
+                        </div>
+                    </a>
+
+                    <a href="https://github.com/Muhammad-Usman55"
+                       target="_blank" rel="noopener"
+                       class="glass-card contact-info-card">
+                        <div class="contact-icon-circle">
+                            <i class="fab fa-github"></i>
+                        </div>
+                        <div>
+                            <p class="contact-card-label">GitHub</p>
+                            <p class="contact-card-value">Muhammad-Usman55</p>
+                        </div>
+                    </a>
+
+                    <a href="https://www.linkedin.com/in/muhammadusman55/"
+                       target="_blank" rel="noopener"
+                       class="glass-card contact-info-card">
+                        <div class="contact-icon-circle">
+                            <i class="fab fa-linkedin"></i>
+                        </div>
+                        <div>
+                            <p class="contact-card-label">LinkedIn</p>
+                            <p class="contact-card-value">muhammadusman55</p>
+                        </div>
+                    </a>
+
+                    <!-- Response time note -->
+                    <div class="glass-card" style="padding:20px 22px; margin-top:8px;">
+                        <div style="display:flex; align-items:center; gap:12px;">
+                            <div style="width:42px; height:42px; border-radius:11px; background:linear-gradient(135deg, #2ecc71, #27ae60); display:flex; align-items:center; justify-content:center; color:#fff; font-size:1rem; flex-shrink:0;">
+                                <i class="fas fa-clock"></i>
+                            </div>
+                            <div>
+                                <p style="font-size:0.78rem; color:var(--secondary-color); text-transform:uppercase; letter-spacing:0.9px; font-weight:600; margin-bottom:2px;">Response Time</p>
+                                <p style="font-size:0.9rem; font-weight:600; color:var(--text-color);">Usually within 24 hours</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="site-footer">
+        <div class="footer-inner">
+            <div class="footer-grid">
+
+                <div class="footer-brand">
+                    <a href="/home" class="logo">
+                        <i class="fas fa-quote-right"></i>
+                        <span>QuoteGen</span>
+                    </a>
+                    <p class="footer-brand-desc">
+                        A modern bilingual quote generator celebrating wisdom in
+                        English and Urdu. Find inspiration, save your favorites,
+                        and share what moves you.
+                    </p>
+                    <div class="footer-social-row">
+                        <a href="https://github.com/Muhammad-Usman55" target="_blank" rel="noopener" aria-label="GitHub">
+                            <i class="fab fa-github"></i>
+                        </a>
+                        <a href="https://www.linkedin.com/in/muhammadusman55/" target="_blank" rel="noopener" aria-label="LinkedIn">
+                            <i class="fab fa-linkedin"></i>
+                        </a>
+                        <a href="mailto:usmanshahidhnd2108@gmail.com" aria-label="Email">
+                            <i class="fas fa-envelope"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <div>
+                    <p class="footer-col-title">Quick Links</p>
+                    <ul class="footer-links">
+                        <li><a href="/home"><i class="fas fa-home fa-xs"></i> Home</a></li>
+                        <li><a href="/about"><i class="fas fa-info-circle fa-xs"></i> About</a></li>
+                        <li><a href="/favorites"><i class="fas fa-heart fa-xs"></i> Favorites</a></li>
+                        <li><a href="/contact"><i class="fas fa-envelope fa-xs"></i> Contact</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <p class="footer-col-title">Features</p>
+                    <ul class="footer-links">
+                        <li><a href="/home">English Quotes</a></li>
+                        <li><a href="/home">Urdu Quotes</a></li>
+                        <li><a href="/home">Text to Speech</a></li>
+                        <li><a href="/favorites">Save Favorites</a></li>
+                        <li><a href="/home">Social Sharing</a></li>
+                    </ul>
+                </div>
+
+            </div>
+
+            <div class="footer-bottom">
+                <p>&copy; 2026 QuoteGen by Muhammad Usman Shahid. All rights reserved.</p>
+                <p style="display:flex; align-items:center; gap:8px;">
+                    <i class="fas fa-star" style="color:var(--primary-color); font-size:0.75rem;"></i>
+                    Inspiring minds, one quote at a time
+                    <i class="fas fa-star" style="color:var(--primary-color); font-size:0.75rem;"></i>
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="auth.js"></script>
+    <script src="shared.js"></script>
+    <script src="contact.js"></script>
+</body>
+
+</html>

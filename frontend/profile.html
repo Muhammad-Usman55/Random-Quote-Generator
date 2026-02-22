@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>html{background:#f8faff}html[data-theme=dark]{background:#09090f}</style>
+    <script>(function(){try{var t=localStorage.getItem('theme');if(t)document.documentElement.setAttribute('data-theme',t);}catch(e){}document.documentElement.classList.add('no-trans');var _sh=false;function _show(){if(_sh)return;_sh=true;document.documentElement.classList.remove('no-trans');if(document.body){document.body.style.transition='opacity 0.45s ease';void document.body.offsetWidth;document.body.style.opacity='1';}}setTimeout(_show,0);document.addEventListener('DOMContentLoaded',function(){requestAnimationFrame(_show);});window.addEventListener('load',_show);})()</script>
+    <title>My Profile — QuoteGen</title>
+    <meta name="description" content="Manage your QuoteGen profile, saved quotes, and liked quotes.">
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>tailwind.config = { corePlugins: { preflight: false } }</script>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="shared.css">
+    <script>
+        // Auth guard — redirect guests to login
+        if (!localStorage.getItem('qg_access')) window.location.replace('/login?next=/profile');
+    </script>
+</head>
+
+<body class="page-wrapper">
+
+    <!-- Header -->
+    <header class="main-header">
+        <a href="/home" class="logo" style="text-decoration:none">
+            <i class="fas fa-quote-right"></i>
+            <span>QuoteGen</span>
+        </a>
+        <nav id="nav-menu" class="nav-links" aria-label="Main navigation">
+            <a href="/home"     class="nav-link">Home</a>
+            <a href="/search"    class="nav-link">Search</a>
+            <a href="/about"     class="nav-link">About</a>
+            <a href="/favorites" class="nav-link">Favorites</a>
+            <a href="/contact"   class="nav-link">Contact</a>
+        </nav>
+        <div class="header-actions">
+            <div id="auth-slot"></div>
+            <button id="theme-toggle" class="theme-btn" aria-label="Toggle theme">
+                <i class="fas fa-moon"></i>
+            </button>
+            <button id="hamburger" class="hamburger" aria-label="Toggle menu" aria-expanded="false">
+                <span></span><span></span><span></span>
+            </button>
+        </div>
+    </header>
+
+    <main style="flex:1">
+
+        <!-- Page Hero -->
+        <section class="page-hero">
+            <p style="color:var(--primary-color);font-size:0.85rem;font-weight:700;text-transform:uppercase;letter-spacing:2px;margin-bottom:10px;">
+                Account
+            </p>
+            <h1 class="page-hero-title">My <span>Profile</span></h1>
+            <p class="page-hero-sub">Your account details, saved quotes, and liked quotes.</p>
+        </section>
+
+        <section class="section-wrap" style="padding-bottom:64px;">
+
+            <!-- ── User Card ── -->
+            <div id="profile-card" class="glass-card" style="max-width:500px;margin:0 auto 40px;padding:36px 32px;">
+
+                <!-- Loading skeleton -->
+                <div id="profile-loading" style="text-align:center;">
+                    <i class="fas fa-spinner fa-spin" style="font-size:2rem;color:var(--primary-color);"></i>
+                </div>
+
+                <!-- Loaded state -->
+                <div id="profile-info" hidden>
+                    <div style="display:flex;align-items:center;gap:20px;margin-bottom:24px;flex-wrap:wrap;">
+                        <div id="profile-avatar-wrap" style="flex-shrink:0;">
+                            <!-- Avatar injected by JS -->
+                        </div>
+                        <div>
+                            <div id="profile-username" style="font-size:1.25rem;font-weight:700;"></div>
+                            <div id="profile-email" style="font-size:0.88rem;color:var(--secondary-color);margin-top:2px;"></div>
+                            <div id="profile-provider" style="margin-top:6px;"></div>
+                        </div>
+                    </div>
+
+                    <!-- Unverified warning -->
+                    <div id="profile-unverified"
+                         style="padding:10px 14px;border-radius:10px;background:rgba(243,156,18,0.12);border:1px solid rgba(243,156,18,0.35);font-size:0.85rem;color:#d68910;display:flex;gap:10px;align-items:flex-start;margin-bottom:16px;"
+                         hidden>
+                        <i class="fas fa-exclamation-triangle" style="margin-top:2px;flex-shrink:0;"></i>
+                        <span>Your email is not verified. Check the server console for the verification link.</span>
+                    </div>
+
+                    <!-- Stats row -->
+                    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+                        <div class="glass-card" style="padding:16px;text-align:center;">
+                            <div id="saved-count" style="font-size:1.6rem;font-weight:800;color:var(--primary-color);">—</div>
+                            <div style="font-size:0.78rem;color:var(--secondary-color);text-transform:uppercase;letter-spacing:0.8px;font-weight:600;">Saved Quotes</div>
+                        </div>
+                        <div class="glass-card" style="padding:16px;text-align:center;">
+                            <div id="liked-count" style="font-size:1.6rem;font-weight:800;color:#e74c3c;">—</div>
+                            <div style="font-size:0.78rem;color:var(--secondary-color);text-transform:uppercase;letter-spacing:0.8px;font-weight:600;">Liked Quotes</div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- ── Tabs ── -->
+            <div style="display:flex;gap:8px;margin-bottom:24px;border-bottom:2px solid var(--border-color);padding-bottom:0;">
+                <button id="tab-saved" class="profile-tab profile-tab-active" data-tab="saved">
+                    <i class="fas fa-heart"></i> Saved Quotes
+                </button>
+                <button id="tab-liked" class="profile-tab" data-tab="liked">
+                    <i class="fas fa-thumbs-up"></i> Liked Quotes
+                </button>
+            </div>
+
+            <!-- ── Quote grids ── -->
+            <div id="quotes-loading" style="text-align:center;padding:40px;">
+                <i class="fas fa-spinner fa-spin" style="font-size:2rem;color:var(--primary-color);"></i>
+            </div>
+
+            <div id="saved-grid"  class="favorites-grid" hidden></div>
+            <div id="liked-grid"  class="favorites-grid" hidden></div>
+
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="site-footer" style="padding:20px 0;">
+        <div class="footer-inner">
+            <div class="footer-bottom" style="border-top:none;padding-top:0;">
+                <p>&copy; 2026 QuoteGen by Muhammad Usman Shahid. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="auth.js"></script>
+    <script src="shared.js"></script>
+    <script src="profile.js"></script>
+</body>
+
+</html>

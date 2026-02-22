@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>html{background:#f8faff}html[data-theme=dark]{background:#09090f}</style>
+    <script>(function(){try{var t=localStorage.getItem('theme');if(t)document.documentElement.setAttribute('data-theme',t);}catch(e){}document.documentElement.classList.add('no-trans');var _sh=false;function _show(){if(_sh)return;_sh=true;document.documentElement.classList.remove('no-trans');if(document.body){document.body.style.transition='opacity 0.45s ease';void document.body.offsetWidth;document.body.style.opacity='1';}}setTimeout(_show,0);document.addEventListener('DOMContentLoaded',function(){requestAnimationFrame(_show);});window.addEventListener('load',_show);})()</script>
+    <title>QuoteGen — Random Quote Generator</title>
+    <meta name="description" content="Discover inspiring quotes from 9 live sources. Filter by mood, topic, or author. Save, share, and listen with QuoteGen.">
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>tailwind.config = { corePlugins: { preflight: false } }</script>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="shared.css">
+    <link rel="stylesheet" href="home.css">
+</head>
+
+<body>
+
+    <!-- ─── HEADER ──────────────────────────────────────────────────── -->
+    <header class="main-header">
+        <a href="/home" class="logo" style="text-decoration:none">
+            <i class="fas fa-quote-right"></i>
+            <span>QuoteGen</span>
+        </a>
+        <nav id="nav-menu" class="nav-links" aria-label="Main navigation">
+            <a href="/home"     class="nav-link">Home</a>
+            <a href="/search"    class="nav-link">Search</a>
+            <a href="/about"     class="nav-link">About</a>
+            <a href="/favorites" class="nav-link">Favorites</a>
+            <a href="/contact"   class="nav-link">Contact</a>
+        </nav>
+        <div class="header-actions">
+            <div id="auth-slot"></div>
+            <button id="theme-toggle" class="theme-btn" aria-label="Toggle theme">
+                <i class="fas fa-moon"></i>
+            </button>
+            <button id="hamburger" class="hamburger" aria-label="Toggle menu" aria-expanded="false">
+                <span></span><span></span><span></span>
+            </button>
+        </div>
+    </header>
+
+    <!-- ─── HERO ─────────────────────────────────────────────────────── -->
+    <section class="home-hero">
+
+        <!-- Animated floating quote marks -->
+        <div class="floating-bg" aria-hidden="true">
+            <i class="fas fa-quote-right fq fq-1"></i>
+            <i class="fas fa-quote-left  fq fq-2"></i>
+            <i class="fas fa-quote-right fq fq-3"></i>
+            <i class="fas fa-quote-left  fq fq-4"></i>
+            <i class="fas fa-quote-right fq fq-5"></i>
+            <i class="fas fa-quote-left  fq fq-6"></i>
+            <i class="fas fa-quote-right fq fq-7"></i>
+            <i class="fas fa-quote-left  fq fq-8"></i>
+            <i class="fas fa-quote-right fq fq-9"></i>
+            <i class="fas fa-quote-left  fq fq-10"></i>
+        </div>
+
+        <!-- Badge -->
+        <div class="hero-badge">
+            <span class="hero-badge-dot"></span>
+            <span id="hero-badge-text">Inspiring &middot; Free &middot; Beautiful</span>
+        </div>
+
+        <!-- Headline -->
+        <h1 class="hero-title">
+            <span id="hero-title-line1">Discover Words That</span><br>
+            <span class="hero-accent"><span id="typed-text"></span></span><span class="typed-cursor" aria-hidden="true"></span>
+        </h1>
+
+        <!-- Sub -->
+        <p class="hero-sub">
+            Thousands of hand-picked quotes from <strong>9 live sources</strong> &mdash;
+            filtered by mood, topic, and author. Listen, save, and share what moves you, every single day.
+        </p>
+
+        <!-- CTA Buttons -->
+        <div class="hero-btns">
+            <button id="hero-get-quote" class="btn-hero-primary">
+                <i class="fas fa-bolt"></i> Get a Quote
+            </button>
+            <a href="/favorites" class="btn-hero-outline">
+                <i class="fas fa-heart"></i> My Favorites
+            </a>
+        </div>
+
+        <!-- Stats -->
+        <div class="hero-stats-wrap">
+            <div class="hero-stat">
+                <span class="hero-stat-number">
+                    <span class="counter" data-target="10000">0</span>+
+                </span>
+                <span class="hero-stat-label">Curated Quotes</span>
+            </div>
+            <div class="hero-stat">
+                <span class="hero-stat-number">9</span>
+                <span class="hero-stat-label">Live Sources</span>
+            </div>
+            <div class="hero-stat">
+                <span class="hero-stat-number">14</span>
+                <span class="hero-stat-label">Moods &amp; Topics</span>
+            </div>
+            <div class="hero-stat">
+                <span class="hero-stat-number">100%</span>
+                <span class="hero-stat-label">Free Forever</span>
+            </div>
+        </div>
+
+        <!-- Scroll indicator -->
+        <a id="scroll-to-quote" class="scroll-indicator" href="#quote-section" aria-label="Scroll to quote generator">
+            <div class="scroll-line"></div>
+            <span>Scroll</span>
+        </a>
+    </section>
+
+    <!-- ─── QUOTE GENERATOR ───────────────────────────────────────────── -->
+    <section id="quote-section">
+        <div class="container">
+
+            <!-- ─── FILTER BAR ──────────────────────────────────── -->
+            <div id="filter-bar" class="filter-bar">
+
+                <!-- Mood chips -->
+                <div class="filter-group">
+                    <span class="filter-group-label">Mood</span>
+                    <div class="filter-chips" role="group" aria-label="Filter by mood">
+                        <button class="filter-chip" data-filter="mood" data-value="happy"><i class="fas fa-smile"></i> Happy</button>
+                        <button class="filter-chip" data-filter="mood" data-value="sad"><i class="fas fa-cloud-rain"></i> Sad</button>
+                        <button class="filter-chip" data-filter="mood" data-value="motivational"><i class="fas fa-fire"></i> Motivational</button>
+                        <button class="filter-chip" data-filter="mood" data-value="inspiring"><i class="fas fa-star"></i> Inspiring</button>
+                        <button class="filter-chip" data-filter="mood" data-value="peaceful"><i class="fas fa-leaf"></i> Peaceful</button>
+                        <button class="filter-chip" data-filter="mood" data-value="funny"><i class="fas fa-laugh"></i> Funny</button>
+                    </div>
+                </div>
+
+                <!-- Topic chips -->
+                <div class="filter-group">
+                    <span class="filter-group-label">Topic</span>
+                    <div class="filter-chips" role="group" aria-label="Filter by topic">
+                        <button class="filter-chip" data-filter="topic" data-value="love">Love</button>
+                        <button class="filter-chip" data-filter="topic" data-value="life">Life</button>
+                        <button class="filter-chip" data-filter="topic" data-value="success">Success</button>
+                        <button class="filter-chip" data-filter="topic" data-value="wisdom">Wisdom</button>
+                        <button class="filter-chip" data-filter="topic" data-value="friendship">Friendship</button>
+                        <button class="filter-chip" data-filter="topic" data-value="education">Education</button>
+                        <button class="filter-chip" data-filter="topic" data-value="faith">Faith</button>
+                        <button class="filter-chip" data-filter="topic" data-value="nature">Nature</button>
+                    </div>
+                </div>
+
+                <!-- Author dropdown -->
+                <div class="filter-group filter-group--author">
+                    <span class="filter-group-label">Author</span>
+                    <select id="author-filter" class="filter-author-select" aria-label="Filter by author">
+                        <option value="">Any Author</option>
+                    </select>
+                </div>
+
+                <!-- Language filter chips -->
+                <div class="filter-group">
+                    <span class="filter-group-label">Language</span>
+                    <div class="filter-chips" role="group" aria-label="Filter by quote language">
+                        <button class="filter-chip" data-filter="quoteLang" data-value="all">All</button>
+                        <button class="filter-chip active" data-filter="quoteLang" data-value="en">English</button>
+                        <button class="filter-chip" data-filter="quoteLang" data-value="ur">اردو</button>
+                    </div>
+                </div>
+
+                <!-- Clear button: hidden until a filter is active -->
+                <button id="clear-filters-btn" class="filter-clear-btn" hidden aria-label="Clear all filters">
+                    <i class="fas fa-times-circle"></i> Clear Filters
+                </button>
+
+            </div>
+            <!-- ─── END FILTER BAR ──────────────────────────────── -->
+
+            <div class="quote-box">
+                <!-- Quote Content -->
+                <div class="quote-content">
+                    <i class="fas fa-quote-left quote-icon"></i>
+                    <span id="quote" class="quote-text">Loading...</span>
+                    <i class="fas fa-quote-right quote-icon"></i>
+                </div>
+
+                <!-- Author -->
+                <div class="quote-author">
+                    <span id="author"></span>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="buttons">
+                    <button id="prev-quote" class="button prev-quote-btn" disabled>Previous Quote</button>
+                    <button id="tts-btn" class="button tts-btn" aria-label="Play quote audio">
+                        <i class="fas fa-volume-up"></i> Speak
+                    </button>
+                    <button id="fav-btn" class="button fav-btn" aria-label="Save to favorites">
+                        <i class="fas fa-heart"></i> Add to Favorites
+                    </button>
+                    <button id="view-fav-btn" class="button view-fav-btn" aria-label="View saved favorites">
+                        <i class="fas fa-list"></i> View Favorites
+                    </button>
+                    <a id="twitter" class="button" href="#" target="_blank" title="Tweet this quote!">
+                        <i class="fab fa-twitter"></i>
+                    </a>
+                    <button id="whatsapp" class="button" aria-label="Share on WhatsApp">
+                        <i class="fab fa-whatsapp"></i> WhatsApp
+                    </button>
+                    <button id="next-quote" class="button new-quote-btn">Next Quote</button>
+                </div>
+            </div>
+
+            <div id="favorites-modal" class="modal" hidden>
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h2>Saved Quotes</h2>
+                        <button id="close-fav" class="close-btn" aria-label="Close favorites">&times;</button>
+                    </div>
+                    <div id="favorites-list" class="favorites-list"></div>
+                </div>
+            </div>
+
+            <div class="loader" id="loader"></div>
+        </div>
+    </section>
+
+    <!-- ─── HOW IT WORKS ─────────────────────────────────────────────── -->
+    <section class="how-section">
+        <div class="section-wrap">
+
+            <div style="text-align:center; margin-bottom:48px;" class="reveal">
+                <span class="section-eyebrow">Simple &amp; Fast</span>
+                <h2 class="section-title" style="font-size:1.9rem; font-weight:800;">How It Works</h2>
+                <p class="section-subtitle">
+                    From zero to inspired in under ten seconds.
+                </p>
+            </div>
+
+            <div class="steps-grid stagger-children">
+
+                <div class="glass-card step-card reveal">
+                    <div class="step-number">1</div>
+                    <i class="fas fa-filter step-icon"></i>
+                    <h3>Set Your Mood</h3>
+                    <p>Pick a mood, topic, or author from the filter bar — or leave it open for a surprise. QuoteGen instantly finds the perfect match from thousands of quotes.</p>
+                </div>
+
+                <div class="glass-card step-card reveal">
+                    <div class="step-number">2</div>
+                    <i class="fas fa-headphones-alt step-icon"></i>
+                    <h3>Read or Listen</h3>
+                    <p>Read the quote and tap <strong>Speak</strong> to hear it read aloud. Use <strong>Previous</strong> and <strong>Next</strong> to browse your session history.</p>
+                </div>
+
+                <div class="glass-card step-card reveal">
+                    <div class="step-number">3</div>
+                    <i class="fas fa-share-alt step-icon"></i>
+                    <h3>Save &amp; Share</h3>
+                    <p>Tap the heart to save it to your personal collection, or share it instantly on Twitter and WhatsApp. Sign in to keep your collection across devices.</p>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- ─── MARQUEE — FAMOUS QUOTES ──────────────────────────────────── -->
+    <div class="marquee-section" aria-hidden="true">
+        <p class="marquee-label">Famous Quotes</p>
+        <div class="marquee-wrapper">
+            <div class="marquee-track">
+                <!-- First set -->
+                <div class="marquee-item"><i class="fas fa-star"></i> "The only way to do great work is to love what you do." — Steve Jobs</div>
+                <div class="marquee-item"><i class="fas fa-star"></i> "In the middle of every difficulty lies opportunity." — Albert Einstein</div>
+                <div class="marquee-item"><i class="fas fa-star"></i> "It does not matter how slowly you go as long as you do not stop." — Confucius</div>
+                <div class="marquee-item"><i class="fas fa-star"></i> "Life is what happens when you're busy making other plans." — John Lennon</div>
+                <div class="marquee-item"><i class="fas fa-star"></i> "The future belongs to those who believe in the beauty of their dreams." — Eleanor Roosevelt</div>
+                <div class="marquee-item"><i class="fas fa-star"></i> "Success is not final, failure is not fatal." — Winston Churchill</div>
+                <div class="marquee-item"><i class="fas fa-star"></i> "Believe you can and you're halfway there." — Theodore Roosevelt</div>
+                <div class="marquee-item"><i class="fas fa-star"></i> "You miss 100% of the shots you don't take." — Wayne Gretzky</div>
+                <!-- Duplicate for seamless loop -->
+                <div class="marquee-item"><i class="fas fa-star"></i> "The only way to do great work is to love what you do." — Steve Jobs</div>
+                <div class="marquee-item"><i class="fas fa-star"></i> "In the middle of every difficulty lies opportunity." — Albert Einstein</div>
+                <div class="marquee-item"><i class="fas fa-star"></i> "It does not matter how slowly you go as long as you do not stop." — Confucius</div>
+                <div class="marquee-item"><i class="fas fa-star"></i> "Life is what happens when you're busy making other plans." — John Lennon</div>
+                <div class="marquee-item"><i class="fas fa-star"></i> "The future belongs to those who believe in the beauty of their dreams." — Eleanor Roosevelt</div>
+                <div class="marquee-item"><i class="fas fa-star"></i> "Success is not final, failure is not fatal." — Winston Churchill</div>
+                <div class="marquee-item"><i class="fas fa-star"></i> "Believe you can and you're halfway there." — Theodore Roosevelt</div>
+                <div class="marquee-item"><i class="fas fa-star"></i> "You miss 100% of the shots you don't take." — Wayne Gretzky</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ─── FEATURES ─────────────────────────────────────────────────── -->
+    <section class="home-features">
+        <div class="section-wrap">
+
+            <div style="text-align:center; margin-bottom:48px;" class="reveal">
+                <span class="section-eyebrow">Everything You Need</span>
+                <h2 class="section-title" style="font-size:1.9rem; font-weight:800;">Built for Inspiration</h2>
+                <p class="section-subtitle">
+                    Every feature you need to find, enjoy, and share quotes — in one beautiful app.
+                </p>
+            </div>
+
+            <div class="hf-grid stagger-children">
+
+                <div class="glass-card hf-card reveal">
+                    <div class="hf-icon"><i class="fas fa-satellite-dish"></i></div>
+                    <h3>9 Live Sources</h3>
+                    <p>Quotes are fetched in real-time from 9 independent APIs — ZenQuotes, Quotable, FavQs, and more — shuffled on every request so you always get a fresh, unique line.</p>
+                </div>
+
+                <div class="glass-card hf-card reveal">
+                    <div class="hf-icon"><i class="fas fa-sliders-h"></i></div>
+                    <h3>Smart Filters</h3>
+                    <p>Narrow down by mood (happy, inspiring, peaceful…) and topic (love, success, wisdom…), or pick a specific author. Get exactly the quote you're in the mood for.</p>
+                </div>
+
+                <div class="glass-card hf-card reveal">
+                    <div class="hf-icon"><i class="fas fa-search"></i></div>
+                    <h3>Powerful Search</h3>
+                    <p>Search by keyword, paste a full quote to find its author, or browse by tag. Results ranked by relevance with instant in-page highlighting.</p>
+                </div>
+
+                <div class="glass-card hf-card reveal">
+                    <div class="hf-icon"><i class="fas fa-volume-up"></i></div>
+                    <h3>Text to Speech</h3>
+                    <p>Tap Speak to hear any quote read aloud using your device's natural speech engine. Multiple voices supported — great for accessibility, focus, and on-the-go inspiration.</p>
+                </div>
+
+                <div class="glass-card hf-card reveal">
+                    <div class="hf-icon"><i class="fas fa-heart"></i></div>
+                    <h3>Personal Collection</h3>
+                    <p>Save quotes you love with a single tap. Sign in to sync your personal collection across devices and revisit your favorites any time.</p>
+                </div>
+
+                <div class="glass-card hf-card reveal">
+                    <div class="hf-icon"><i class="fas fa-share-alt"></i></div>
+                    <h3>One-Click Sharing</h3>
+                    <p>Share directly to Twitter and WhatsApp with a single click — quotes are pre-formatted with the author name and ready to post, no editing needed.</p>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- ─── CTA ───────────────────────────────────────────────────────── -->
+    <section class="cta-section">
+        <div class="cta-content reveal">
+
+            <!-- Icon ring -->
+            <div class="cta-icon">
+                <i class="fas fa-quote-right"></i>
+            </div>
+
+            <h2 class="cta-title">Ready to Find Your<br><span>Next Favourite Quote?</span></h2>
+
+            <p class="cta-sub">
+                Thousands of hand-picked quotes filtered by mood, topic, or author —
+                listen, save, and share what moves you. Completely free, always.
+            </p>
+
+            <!-- Feature pills -->
+            <div class="cta-pills">
+                <span class="cta-pill"><i class="fas fa-bolt"></i> 10,000+ Quotes</span>
+                <span class="cta-pill"><i class="fas fa-satellite-dish"></i> 9 Live Sources</span>
+                <span class="cta-pill"><i class="fas fa-sliders-h"></i> 14 Filters</span>
+                <span class="cta-pill"><i class="fas fa-volume-up"></i> Text to Speech</span>
+                <span class="cta-pill"><i class="fas fa-heart"></i> Save Favorites</span>
+                <span class="cta-pill"><i class="fas fa-share-alt"></i> Share Instantly</span>
+            </div>
+
+            <div class="cta-btns">
+                <button id="cta-get-quote" class="btn-cta-primary" onclick="document.getElementById('quote-section').scrollIntoView({behavior:'smooth'})">
+                    <i class="fas fa-bolt"></i> Get a Quote Now
+                </button>
+                <a href="/search" class="btn-hero-outline btn-cta-outline">
+                    <i class="fas fa-search"></i> Explore Quotes
+                </a>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- ─── FOOTER ────────────────────────────────────────────────────── -->
+    <footer class="site-footer">
+        <div class="footer-inner">
+            <div class="footer-grid">
+
+                <div class="footer-brand">
+                    <a href="/home" class="logo">
+                        <i class="fas fa-quote-right"></i>
+                        <span>QuoteGen</span>
+                    </a>
+                    <p class="footer-brand-desc">
+                        A modern quote generator powered by 9 live internet sources.
+                        Find inspiration, save your favorites,
+                        and share what moves you.
+                    </p>
+                    <div class="footer-social-row">
+                        <a href="https://github.com/Muhammad-Usman55" target="_blank" rel="noopener" aria-label="GitHub">
+                            <i class="fab fa-github"></i>
+                        </a>
+                        <a href="https://www.linkedin.com/in/muhammadusman55/" target="_blank" rel="noopener" aria-label="LinkedIn">
+                            <i class="fab fa-linkedin"></i>
+                        </a>
+                        <a href="mailto:usmanshahidhnd2108@gmail.com" aria-label="Email">
+                            <i class="fas fa-envelope"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <div>
+                    <p class="footer-col-title">Quick Links</p>
+                    <ul class="footer-links">
+                        <li><a href="/home"><i class="fas fa-home fa-xs"></i> Home</a></li>
+                        <li><a href="/about"><i class="fas fa-info-circle fa-xs"></i> About</a></li>
+                        <li><a href="/favorites"><i class="fas fa-heart fa-xs"></i> Favorites</a></li>
+                        <li><a href="/contact"><i class="fas fa-envelope fa-xs"></i> Contact</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <p class="footer-col-title">Features</p>
+                    <ul class="footer-links">
+                        <li><a href="/home">English Quotes</a></li>
+                        <li><a href="/search">Search Quotes</a></li>
+                        <li><a href="/home">Text to Speech</a></li>
+                        <li><a href="/favorites">Save Favorites</a></li>
+                        <li><a href="/home">Social Sharing</a></li>
+                    </ul>
+                </div>
+
+            </div>
+
+            <div class="footer-bottom">
+                <p id="footer-copy">&copy; 2026 QuoteGen by Muhammad Usman Shahid. All rights reserved.</p>
+                <p style="display:flex; align-items:center; gap:8px;">
+                    <i class="fas fa-star" style="color:var(--primary-color); font-size:0.75rem;"></i>
+                    Inspiring minds, one quote at a time
+                    <i class="fas fa-star" style="color:var(--primary-color); font-size:0.75rem;"></i>
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <div id="login-prompt-modal" class="modal" hidden>
+        <div class="modal-content" style="text-align:center;padding:40px 32px;max-width:400px;">
+            <button id="close-login-prompt" class="close-btn" style="position:absolute;top:12px;right:16px;">&times;</button>
+            <div style="font-size:2.5rem;color:var(--primary-color);margin-bottom:16px;">
+                <i class="fas fa-lock"></i>
+            </div>
+            <h2 style="font-size:1.3rem;font-weight:700;margin-bottom:10px;">Login Required</h2>
+            <p style="color:var(--secondary-color);margin-bottom:24px;">
+                Sign in to save and like quotes to your personal collection.
+            </p>
+            <div style="display:flex;gap:12px;justify-content:center;">
+                <a href="/login" class="button">Log In</a>
+                <a href="/signup" class="button" style="background:transparent;border:2px solid var(--primary-color);">Sign Up</a>
+            </div>
+        </div>
+    </div>
+
+    <script>window.QUOTE_PAGE = true;</script>
+    <script src="auth.js"></script>
+    <script src="shared.js"></script>
+    <script src="script.js"></script>
+    <script src="home.js"></script>
+</body>
+
+</html>

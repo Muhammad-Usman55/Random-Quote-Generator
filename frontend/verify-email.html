@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>html{background:#f8faff}html[data-theme=dark]{background:#09090f}</style>
+    <script>(function(){try{var t=localStorage.getItem('theme');if(t)document.documentElement.setAttribute('data-theme',t);}catch(e){}document.documentElement.classList.add('no-trans');var _sh=false;function _show(){if(_sh)return;_sh=true;document.documentElement.classList.remove('no-trans');if(document.body){document.body.style.transition='opacity 0.45s ease';void document.body.offsetWidth;document.body.style.opacity='1';}}setTimeout(_show,0);document.addEventListener('DOMContentLoaded',function(){requestAnimationFrame(_show);});window.addEventListener('load',_show);})()</script>
+    <title>Verify Email — QuoteGen</title>
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>tailwind.config = { corePlugins: { preflight: false } }</script>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="shared.css">
+</head>
+
+<body class="page-wrapper">
+
+    <header class="main-header">
+        <a href="/home" class="logo" style="text-decoration:none">
+            <i class="fas fa-quote-right"></i>
+            <span>QuoteGen</span>
+        </a>
+        <nav id="nav-menu" class="nav-links" aria-label="Main navigation">
+            <a href="/home"     class="nav-link">Home</a>
+            <a href="/search"    class="nav-link">Search</a>
+            <a href="/about"     class="nav-link">About</a>
+            <a href="/favorites" class="nav-link">Favorites</a>
+            <a href="/contact"   class="nav-link">Contact</a>
+        </nav>
+        <div class="header-actions">
+            <div id="auth-slot"></div>
+            <button id="theme-toggle" class="theme-btn" aria-label="Toggle theme">
+                <i class="fas fa-moon"></i>
+            </button>
+            <button id="hamburger" class="hamburger" aria-label="Toggle menu" aria-expanded="false">
+                <span></span><span></span><span></span>
+            </button>
+        </div>
+    </header>
+
+    <main style="flex:1; display:flex; align-items:center; justify-content:center; padding:100px 16px 48px;">
+
+        <div class="glass-card" style="width:100%;max-width:420px;padding:40px 36px;text-align:center;">
+
+            <!-- Loading state -->
+            <div id="ve-loading">
+                <i class="fas fa-spinner fa-spin" style="font-size:2.5rem;color:var(--primary-color);margin-bottom:16px;"></i>
+                <p style="color:var(--secondary-color);">Verifying your email…</p>
+            </div>
+
+            <!-- Success state -->
+            <div id="ve-success" hidden>
+                <div style="font-size:3rem;color:#2ecc71;margin-bottom:16px;"><i class="fas fa-check-circle"></i></div>
+                <h2 style="font-size:1.4rem;font-weight:700;margin-bottom:10px;">Email Verified!</h2>
+                <p style="color:var(--secondary-color);margin-bottom:24px;">Your email has been verified successfully. You can now log in.</p>
+                <a href="/login" class="button" style="display:inline-flex;">
+                    <i class="fas fa-sign-in-alt"></i>&nbsp; Log In
+                </a>
+            </div>
+
+            <!-- Error state -->
+            <div id="ve-error" hidden>
+                <div style="font-size:3rem;color:#e74c3c;margin-bottom:16px;"><i class="fas fa-times-circle"></i></div>
+                <h2 style="font-size:1.4rem;font-weight:700;margin-bottom:10px;">Verification Failed</h2>
+                <p id="ve-error-msg" style="color:var(--secondary-color);margin-bottom:24px;"></p>
+                <a href="/signup" class="button" style="display:inline-flex;">
+                    <i class="fas fa-user-plus"></i>&nbsp; Sign Up Again
+                </a>
+            </div>
+
+        </div>
+
+    </main>
+
+    <footer class="site-footer" style="padding:20px 0;">
+        <div class="footer-inner">
+            <div class="footer-bottom" style="border-top:none;padding-top:0;">
+                <p>&copy; 2026 QuoteGen by Muhammad Usman Shahid. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="auth.js"></script>
+    <script src="shared.js"></script>
+    <script>
+    (async function () {
+        var token = new URLSearchParams(window.location.search).get('token');
+        var loading = document.getElementById('ve-loading');
+        var success = document.getElementById('ve-success');
+        var error   = document.getElementById('ve-error');
+        var errMsg  = document.getElementById('ve-error-msg');
+
+        if (!token) {
+            loading.hidden = true;
+            errMsg.textContent = 'No verification token found in the URL.';
+            error.hidden = false;
+            return;
+        }
+
+        try {
+            var res  = await fetch('/api/auth/verify-email?token=' + encodeURIComponent(token));
+            var data = await res.json();
+            loading.hidden = true;
+            if (res.ok) {
+                success.hidden = false;
+            } else {
+                errMsg.textContent = data.detail || 'Verification failed.';
+                error.hidden = false;
+            }
+        } catch (e) {
+            loading.hidden = true;
+            errMsg.textContent = 'Network error. Please try again.';
+            error.hidden = false;
+        }
+    })();
+    </script>
+</body>
+
+</html>

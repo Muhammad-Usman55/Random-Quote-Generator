@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>html{background:#f8faff}html[data-theme=dark]{background:#09090f}</style>
+    <script>(function(){try{var t=localStorage.getItem('theme');if(t)document.documentElement.setAttribute('data-theme',t);}catch(e){}document.documentElement.classList.add('no-trans');var _sh=false;function _show(){if(_sh)return;_sh=true;document.documentElement.classList.remove('no-trans');if(document.body){document.body.style.transition='opacity 0.45s ease';void document.body.offsetWidth;document.body.style.opacity='1';}}setTimeout(_show,0);document.addEventListener('DOMContentLoaded',function(){requestAnimationFrame(_show);});window.addEventListener('load',_show);})()</script>
+    <title>Sign Up — QuoteGen</title>
+    <meta name="description" content="Create a free QuoteGen account to save and manage your favorite quotes.">
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>tailwind.config = { corePlugins: { preflight: false } }</script>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="shared.css">
+    <script>
+        // Redirect logged-in users away
+        if (localStorage.getItem('qg_access')) window.location.replace('/profile');
+    </script>
+</head>
+
+<body class="page-wrapper">
+
+    <!-- Header -->
+    <header class="main-header">
+        <a href="/home" class="logo" style="text-decoration:none">
+            <i class="fas fa-quote-right"></i>
+            <span>QuoteGen</span>
+        </a>
+        <nav id="nav-menu" class="nav-links" aria-label="Main navigation">
+            <a href="/home"     class="nav-link">Home</a>
+            <a href="/search"    class="nav-link">Search</a>
+            <a href="/about"     class="nav-link">About</a>
+            <a href="/favorites" class="nav-link">Favorites</a>
+            <a href="/contact"   class="nav-link">Contact</a>
+        </nav>
+        <div class="header-actions">
+            <div id="auth-slot"></div>
+            <button id="theme-toggle" class="theme-btn" aria-label="Toggle theme">
+                <i class="fas fa-moon"></i>
+            </button>
+            <button id="hamburger" class="hamburger" aria-label="Toggle menu" aria-expanded="false">
+                <span></span><span></span><span></span>
+            </button>
+        </div>
+    </header>
+
+    <main style="flex:1; display:flex; align-items:center; justify-content:center; padding:100px 16px 48px;">
+
+        <!-- Registration form (shown initially) -->
+        <div id="signup-form-wrap" class="glass-card" style="width:100%; max-width:420px; padding:40px 36px;">
+
+            <div style="text-align:center; margin-bottom:28px;">
+                <div style="width:56px;height:56px;border-radius:16px;background:linear-gradient(135deg,var(--primary-color),#6c5ce7);display:flex;align-items:center;justify-content:center;color:#fff;font-size:1.4rem;margin:0 auto 16px;box-shadow:0 4px 16px rgba(74,144,226,0.3);">
+                    <i class="fas fa-user-plus"></i>
+                </div>
+                <h1 style="font-size:1.5rem;font-weight:700;margin-bottom:6px;">Create Account</h1>
+                <p style="color:var(--secondary-color);font-size:0.9rem;">Join QuoteGen — it's free forever.</p>
+            </div>
+
+            <!-- Error message -->
+            <div id="signup-error" class="error-msg" role="alert"
+                 style="margin-bottom:16px;padding:10px 14px;border-radius:10px;background:rgba(231,76,60,0.1);border:1px solid rgba(231,76,60,0.3);font-size:0.88rem;" hidden></div>
+
+            <form id="signup-form" novalidate>
+
+                <div class="form-group">
+                    <label class="form-label" for="email">Email Address</label>
+                    <input id="email" class="form-input" type="email" placeholder="you@example.com"
+                           autocomplete="email" aria-describedby="email-err" required>
+                    <span id="email-err" class="error-msg" role="alert"></span>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="password">Password</label>
+                    <div style="position:relative;">
+                        <input id="password" class="form-input" type="password" placeholder="At least 8 characters"
+                               autocomplete="new-password" style="padding-right:44px;" required>
+                        <button type="button" id="toggle-pw"
+                                style="position:absolute;right:12px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;color:var(--secondary-color);padding:0;font-size:0.95rem;"
+                                aria-label="Show/hide password">
+                            <i class="fas fa-eye"></i>
+                        </button>
+                    </div>
+                    <span id="password-err" class="error-msg" role="alert"></span>
+                </div>
+
+                <button type="submit" id="signup-btn" class="button"
+                        style="width:100%;justify-content:center;padding:13px 24px;font-size:0.96rem;border-radius:14px;margin-top:8px;">
+                    <i class="fas fa-user-plus"></i>&nbsp; Create Account
+                </button>
+
+            </form>
+
+            <div style="text-align:center; margin:20px 0; color:var(--secondary-color); font-size:0.85rem; position:relative;">
+                <span style="background:var(--card-bg);padding:0 12px;position:relative;z-index:1;">or continue with</span>
+                <div style="position:absolute;top:50%;left:0;right:0;height:1px;background:var(--border-color);z-index:0;"></div>
+            </div>
+
+            <a href="/api/auth/google/login"
+               class="button"
+               style="width:100%;justify-content:center;padding:12px 24px;font-size:0.94rem;border-radius:14px;background:transparent;border:1.5px solid var(--border-color);color:var(--text-color);gap:10px;display:flex;align-items:center;">
+                <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg"
+                     alt="Google" style="width:18px;height:18px;">
+                Continue with Google
+            </a>
+
+            <p style="text-align:center;margin-top:24px;font-size:0.88rem;color:var(--secondary-color);">
+                Already have an account?
+                <a href="/login" style="color:var(--primary-color);font-weight:600;">Log In</a>
+            </p>
+
+        </div>
+
+        <!-- Success state (shown after form submission) -->
+        <div id="signup-success" class="glass-card" style="width:100%;max-width:420px;padding:40px 36px;text-align:center;" hidden>
+            <div style="font-size:3rem;color:#2ecc71;margin-bottom:16px;"><i class="fas fa-check-circle"></i></div>
+            <h2 style="font-size:1.4rem;font-weight:700;margin-bottom:10px;">Account Created!</h2>
+            <p style="color:var(--secondary-color);margin-bottom:20px;">
+                Check the <strong>server console</strong> for your email verification link,
+                then verify your account and log in.
+            </p>
+            <a href="/login" class="button" style="display:inline-flex;">
+                <i class="fas fa-sign-in-alt"></i>&nbsp; Go to Login
+            </a>
+        </div>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="site-footer" style="padding:20px 0;">
+        <div class="footer-inner">
+            <div class="footer-bottom" style="border-top:none;padding-top:0;">
+                <p>&copy; 2026 QuoteGen by Muhammad Usman Shahid. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="auth.js"></script>
+    <script src="shared.js"></script>
+    <script>
+    (function () {
+        var form      = document.getElementById('signup-form');
+        var emailEl   = document.getElementById('email');
+        var pwEl      = document.getElementById('password');
+        var errBox    = document.getElementById('signup-error');
+        var signupBtn = document.getElementById('signup-btn');
+        var togglePw  = document.getElementById('toggle-pw');
+
+        // Show/hide password
+        togglePw.addEventListener('click', function () {
+            var isText = pwEl.type === 'text';
+            pwEl.type = isText ? 'password' : 'text';
+            togglePw.querySelector('i').className = isText ? 'fas fa-eye' : 'fas fa-eye-slash';
+        });
+
+        form.addEventListener('submit', async function (e) {
+            e.preventDefault();
+            errBox.hidden = true;
+
+            var email    = emailEl.value.trim();
+            var password = pwEl.value;
+            var valid    = true;
+
+            document.getElementById('email-err').textContent    = '';
+            document.getElementById('password-err').textContent = '';
+
+            if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+                document.getElementById('email-err').textContent = 'Please enter a valid email address.';
+                emailEl.classList.add('input-shake');
+                setTimeout(function () { emailEl.classList.remove('input-shake'); }, 420);
+                valid = false;
+            }
+            if (!password || password.length < 8) {
+                document.getElementById('password-err').textContent = 'Password must be at least 8 characters.';
+                pwEl.classList.add('input-shake');
+                setTimeout(function () { pwEl.classList.remove('input-shake'); }, 420);
+                valid = false;
+            }
+            if (!valid) return;
+
+            signupBtn.disabled = true;
+            signupBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>&nbsp; Creating account…';
+
+            try {
+                var res = await fetch('/api/auth/register', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email: email, password: password })
+                });
+                var data = {};
+                try { data = await res.json(); } catch (_) {}
+                if (!res.ok) {
+                    throw new Error(data.detail || 'Registration failed. Please try again.');
+                }
+                document.getElementById('signup-form-wrap').hidden = true;
+                document.getElementById('signup-success').hidden = false;
+            } catch (err) {
+                errBox.textContent = err.message;
+                errBox.hidden = false;
+                signupBtn.disabled = false;
+                signupBtn.innerHTML = '<i class="fas fa-user-plus"></i>&nbsp; Create Account';
+            }
+        });
+    })();
+    </script>
+</body>
+
+</html>

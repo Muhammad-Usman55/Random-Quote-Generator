@@ -1,0 +1,579 @@
+/* ============================================================
+   style.css — Global design tokens, base elements, shared UI
+   ============================================================ */
+
+/* ── Design tokens (light mode) ─────────────────────────── */
+:root {
+    --primary-color:    #4a90e2;
+    --secondary-color:  #64748b;
+    --bg-gradient:      linear-gradient(135deg, #f8faff 0%, #eef3ff 45%, #f5f0ff 100%);
+    --box-bg:           rgba(255, 255, 255, 0.82);
+    --text-color:       #1a2340;
+    --button-bg:        #4a90e2;
+    --button-text:      #ffffff;
+    --button-hover:     #357abd;
+    --shadow:           0 4px 24px rgba(74, 144, 226, 0.13), 0 1px 4px rgba(0,0,0,0.05);
+    --header-footer-bg: rgba(255, 255, 255, 0.92);
+    --border:           1px solid rgba(74, 144, 226, 0.14);
+    --border-color:     rgba(74, 144, 226, 0.14);
+    --accent-grad:      linear-gradient(135deg, #4a90e2 0%, #6c5ce7 100%);
+    --card-hover-shadow:0 16px 48px rgba(74, 144, 226, 0.2);
+}
+
+/* ── Design tokens (dark mode) ──────────────────────────── */
+[data-theme="dark"] {
+    --primary-color:    #bb86fc;
+    --secondary-color:  #94a3b8;
+    --bg-gradient:      linear-gradient(135deg, #09090f 0%, #0e0e1e 50%, #110d1e 100%);
+    --box-bg:           rgba(18, 16, 36, 0.88);
+    --text-color:       #e2e2f0;
+    --button-bg:        #bb86fc;
+    --button-text:      #0e0e1e;
+    --button-hover:     #9b6dd3;
+    --shadow:           0 8px 32px rgba(0, 0, 0, 0.5), 0 2px 8px rgba(187,134,252,0.08);
+    --header-footer-bg: rgba(9, 9, 15, 0.95);
+    --border:           1px solid rgba(187, 134, 252, 0.12);
+    --border-color:     rgba(187, 134, 252, 0.12);
+    --accent-grad:      linear-gradient(135deg, #bb86fc 0%, #a855f7 100%);
+    --card-hover-shadow:0 16px 48px rgba(187, 134, 252, 0.2);
+}
+
+/* ── Suppress transitions during initial page load ──────── */
+.no-trans, .no-trans *, .no-trans *::before, .no-trans *::after {
+    transition: none !important;
+    animation: none !important;
+}
+
+/* ── HTML root ───────────────────────────────────────────── */
+html {
+    scroll-behavior: smooth;
+    /* offset anchor targets so they clear the 68 px fixed navbar */
+    scroll-padding-top: 68px;
+}
+
+/* ── Reset ───────────────────────────────────────────────── */
+*, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+/* ── Body ────────────────────────────────────────────────── */
+body {
+    min-height: 100vh;
+    background: var(--bg-gradient);
+    color: var(--text-color);
+    font-family: 'Poppins', 'Inter', 'Noto Nastaliq Urdu', sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    transition: background 0.4s ease, color 0.3s ease;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+/* ── Header ──────────────────────────────────────────────── */
+.main-header {
+    width: 100%;
+    padding: 0 40px;
+    height: 68px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: var(--header-footer-bg);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    box-shadow: 0 1px 0 var(--border-color), 0 2px 12px rgba(0,0,0,0.04);
+    border-bottom: var(--border);
+    position: fixed;
+    top: 0;
+    z-index: 1000;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 1.5rem;
+    font-weight: 800;
+    letter-spacing: -0.5px;
+    color: var(--text-color);
+    text-decoration: none;
+}
+
+.logo i { color: var(--primary-color); }
+
+.header-actions {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+/* Theme toggle */
+.theme-btn {
+    background: transparent;
+    border: none;
+    font-size: 1.15rem;
+    color: var(--text-color);
+    cursor: pointer;
+    padding: 8px;
+    border-radius: 50%;
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    line-height: 1;
+}
+
+.theme-btn:hover {
+    transform: rotate(20deg) scale(1.15);
+    background: rgba(128, 128, 128, 0.12);
+    color: var(--primary-color);
+}
+
+/* ── Container (quote page layout wrapper) ───────────────── */
+.container {
+    padding-top: 108px;
+    padding-bottom: 80px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    flex-grow: 1;
+}
+
+/* ── Quote card ──────────────────────────────────────────── */
+.quote-box {
+    background: var(--box-bg);
+    width: 90%;
+    max-width: 780px;
+    border-radius: 24px;
+    box-shadow: var(--shadow);
+    text-align: center;
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: var(--border);
+    position: relative;
+    overflow: hidden;
+    padding: 44px 52px 36px;
+    transition: opacity 0.15s ease, box-shadow 0.3s ease;
+}
+
+.quote-box:hover {
+    box-shadow: var(--card-hover-shadow);
+}
+
+/* Gradient accent bar at the top of the quote card */
+.quote-box-accent {
+    height: 4px;
+    background: var(--accent-grad);
+    width: 100%;
+    display: block;
+    flex-shrink: 0;
+}
+
+/* Inner padding shim */
+.quote-box-inner {
+    padding: 44px 52px 36px;
+}
+
+/* ── Quote typography ────────────────────────────────────── */
+.quote-content {
+    font-size: 1.85rem;
+    font-weight: 700;
+    line-height: 1.55;
+    margin-bottom: 20px;
+    position: relative;
+    letter-spacing: -0.2px;
+}
+
+.quote-icon {
+    font-size: 1.05rem;
+    color: var(--primary-color);
+    vertical-align: super;
+    opacity: 0.65;
+}
+
+.quote-text { padding: 0 8px; }
+.long-quote { font-size: 1.4rem; }
+
+.quote-author {
+    font-size: 0.95rem;
+    font-weight: 600;
+    letter-spacing: 0.3px;
+    color: var(--secondary-color);
+    margin-bottom: 32px;
+}
+
+.quote-author::before {
+    content: '— ';
+    opacity: 0.6;
+}
+
+/* ── Button rows ─────────────────────────────────────────── */
+
+/* Navigation row: ← Previous  |  Next Quote → */
+.btn-row-nav {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    margin-bottom: 12px;
+    flex-wrap: wrap;
+}
+
+/* Utility row: Speak · Save · Share */
+.btn-row-utils {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+/* Divider between rows */
+.btn-divider {
+    width: 90%;
+    height: 1px;
+    background: var(--border-color);
+    margin: 16px auto 14px;
+    opacity: 0.6;
+}
+
+/* Legacy support */
+.buttons {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+/* ── Button base ─────────────────────────────────────────── */
+.button {
+    cursor: pointer;
+    font-size: 0.88rem;
+    font-weight: 600;
+    border: none;
+    border-radius: 50px;
+    color: var(--button-text);
+    background: var(--button-bg);
+    padding: 11px 26px;
+    box-shadow: 0 4px 14px rgba(74, 144, 226, 0.22);
+    transition: all 0.28s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    text-decoration: none;
+    outline: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+    font-family: 'Poppins', sans-serif;
+    white-space: nowrap;
+    position: relative;
+    overflow: hidden;
+}
+
+.button:hover {
+    background: var(--button-hover);
+    transform: translateY(-3px);
+    box-shadow: 0 8px 24px rgba(74, 144, 226, 0.32);
+}
+
+.button:active {
+    transform: translateY(-1px);
+    box-shadow: 0 3px 10px rgba(74, 144, 226, 0.18);
+}
+
+.button:disabled {
+    opacity: 0.42;
+    cursor: not-allowed;
+    box-shadow: none;
+    transform: none;
+    pointer-events: none;
+}
+
+/* Primary nav buttons — gradient, larger */
+.new-quote-btn {
+    background: var(--accent-grad);
+    box-shadow: 0 6px 20px rgba(74, 144, 226, 0.35);
+    padding: 13px 32px;
+    font-size: 0.92rem;
+}
+
+.new-quote-btn:hover {
+    background: var(--accent-grad);
+    filter: brightness(1.08);
+    box-shadow: 0 10px 32px rgba(74, 144, 226, 0.45);
+}
+
+.prev-quote-btn {
+    padding: 13px 28px;
+    font-size: 0.92rem;
+    background: var(--box-bg);
+    color: var(--text-color);
+    border: var(--border);
+    box-shadow: none;
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+}
+
+.prev-quote-btn:hover {
+    background: var(--primary-color);
+    color: #fff;
+    border-color: var(--primary-color);
+    box-shadow: 0 6px 18px rgba(74, 144, 226, 0.3);
+}
+
+/* Utility buttons — ghost style */
+.tts-btn,
+.fav-btn,
+.view-fav-btn {
+    padding: 9px 18px;
+    font-size: 0.82rem;
+    background: var(--box-bg);
+    color: var(--text-color);
+    border: var(--border);
+    box-shadow: none;
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+}
+
+.tts-btn:hover {
+    background: var(--primary-color);
+    color: #fff;
+    border-color: var(--primary-color);
+    box-shadow: 0 4px 14px rgba(74, 144, 226, 0.28);
+}
+
+.view-fav-btn:hover {
+    background: var(--primary-color);
+    color: #fff;
+    border-color: var(--primary-color);
+    box-shadow: 0 4px 14px rgba(74, 144, 226, 0.28);
+}
+
+.fav-btn:hover,
+.fav-btn.active {
+    background: #e74c3c;
+    color: #fff;
+    border-color: #e74c3c;
+    box-shadow: 0 4px 14px rgba(231, 76, 60, 0.3);
+}
+
+/* Social share buttons */
+a#twitter.button,
+button#whatsapp.button {
+    padding: 9px 16px;
+    font-size: 0.82rem;
+    background: var(--box-bg);
+    color: var(--text-color);
+    border: var(--border);
+    box-shadow: none;
+}
+
+a#twitter.button:hover  { background: #1da1f2; color: #fff; border-color: #1da1f2; box-shadow: 0 4px 14px rgba(29,161,242,0.3); }
+button#whatsapp.button:hover { background: #25d366; color: #fff; border-color: #25d366; box-shadow: 0 4px 14px rgba(37,211,102,0.3); }
+
+/* ── Favorites modal ─────────────────────────────────────── */
+.modal {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.45);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    backdrop-filter: blur(6px);
+    z-index: 1100;
+    animation: fadeIn 0.2s ease;
+}
+
+.modal[hidden] { display: none !important; }
+
+.modal-content {
+    background: var(--box-bg);
+    border: var(--border);
+    border-radius: 22px;
+    box-shadow: var(--shadow);
+    width: min(720px, 92vw);
+    max-height: 80vh;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    animation: slideUp 0.25s ease;
+    position: relative;
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+}
+
+.modal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 18px 22px;
+    border-bottom: var(--border);
+}
+
+.modal-header h2 { font-size: 1.1rem; font-weight: 700; margin: 0; }
+
+.close-btn {
+    background: transparent;
+    border: none;
+    font-size: 1.4rem;
+    cursor: pointer;
+    color: var(--secondary-color);
+    padding: 4px 8px;
+    border-radius: 8px;
+    transition: color 0.2s ease, background 0.2s ease;
+    line-height: 1;
+}
+
+.close-btn:hover {
+    color: var(--text-color);
+    background: rgba(128, 128, 128, 0.1);
+}
+
+.favorites-list {
+    padding: 16px 20px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    scroll-behavior: smooth;
+    overscroll-behavior: contain;
+}
+
+.favorite-item {
+    padding: 14px 16px;
+    border-radius: 14px;
+    background: rgba(255, 255, 255, 0.5);
+    border: var(--border);
+}
+
+[data-theme="dark"] .favorite-item { background: rgba(255, 255, 255, 0.04); }
+
+.favorite-quote { font-weight: 600; margin-bottom: 5px; line-height: 1.5; }
+.favorite-author { color: var(--secondary-color); font-size: 0.87rem; }
+
+.empty-state {
+    text-align: center;
+    padding: 30px 10px;
+    color: var(--secondary-color);
+}
+
+/* ── Keyframes ───────────────────────────────────────────── */
+@keyframes fadeIn   { from { opacity: 0; } to { opacity: 1; } }
+@keyframes fadeInDown { from { opacity:0; transform:translateY(-20px); } to { opacity:1; transform:none; } }
+@keyframes slideUp  { from { opacity: 0; transform: translateY(20px) scale(0.97); } to { opacity: 1; transform: translateY(0) scale(1); } }
+@keyframes fadeInUp { from { opacity: 0; transform: translateY(28px) scale(0.96); } to { opacity: 1; transform: translateY(0) scale(1); } }
+@keyframes spin     { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
+@keyframes rippleOut {
+    from { transform: scale(0); opacity: 0.35; }
+    to   { transform: scale(1); opacity: 0; }
+}
+
+@keyframes shake {
+    0%,100% { transform: translateX(0); }
+    20%     { transform: translateX(-6px); }
+    40%     { transform: translateX(6px); }
+    60%     { transform: translateX(-4px); }
+    80%     { transform: translateX(4px); }
+}
+
+@keyframes heartBeat {
+    0%,100% { transform: scale(1); }
+    30%     { transform: scale(1.35); }
+    60%     { transform: scale(0.9); }
+}
+
+@keyframes toastIn {
+    from { transform: translateY(32px); opacity: 0; }
+    to   { transform: translateY(0);    opacity: 1; }
+}
+
+/* ── Ripple wave (button click effect) ───────────────────── */
+.ripple-wave {
+    position: absolute;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.3);
+    animation: rippleOut 0.6s ease-out forwards;
+    pointer-events: none;
+    z-index: 0;
+}
+
+/* ── Error shake ─────────────────────────────────────────── */
+.input-shake { animation: shake 0.4s ease; }
+
+/* ── Save heartbeat ──────────────────────────────────────── */
+.btn-heartbeat { animation: heartBeat 0.45s ease; }
+
+/* ── Toast slide-in ──────────────────────────────────────── */
+.toast-anim { animation: toastIn 0.3s ease both; }
+
+/* ── Scroll reveal ───────────────────────────────────────── */
+.sr {
+    opacity: 0;
+    transform: translateY(22px);
+    transition: opacity 0.55s cubic-bezier(.22,.68,0,1.2),
+                transform 0.55s cubic-bezier(.22,.68,0,1.2);
+}
+.sr.sr-visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.animate-in {
+    animation: fadeInUp 0.55s cubic-bezier(0.23, 1, 0.32, 1) forwards;
+    opacity: 0;
+}
+
+/* ── Loader ──────────────────────────────────────────────── */
+.loader {
+    border: 3px solid rgba(128, 128, 128, 0.15);
+    border-top: 3px solid var(--primary-color);
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    animation: spin 0.75s linear infinite;
+    margin: 24px auto;
+    display: none;
+}
+
+/* ── Footer (basic — extended in shared.css) ─────────────── */
+.main-footer {
+    width: 100%;
+    padding: 22px;
+    text-align: center;
+    background: var(--header-footer-bg);
+    backdrop-filter: blur(14px);
+    font-size: 0.88rem;
+    color: var(--secondary-color);
+    border-top: var(--border);
+}
+
+.social-links { margin-top: 10px; }
+
+.social-links a {
+    color: var(--secondary-color);
+    margin: 0 10px;
+    font-size: 1.3rem;
+    transition: all 0.25s ease;
+    display: inline-block;
+}
+
+.social-links a:hover {
+    color: var(--primary-color);
+    transform: scale(1.2) translateY(-2px);
+}
+
+/* ── Responsive ──────────────────────────────────────────── */
+@media screen and (max-width: 600px) {
+    .main-header { padding: 0 16px; height: 60px; }
+    html { scroll-padding-top: 60px; }
+    .logo { font-size: 1.3rem; }
+    .quote-box { padding: 28px 18px 24px; }
+    .quote-box-inner { padding: 28px 18px 24px; }
+    .quote-content { font-size: 1.45rem; }
+    .long-quote { font-size: 1.18rem; }
+    .new-quote-btn { padding: 12px 24px; }
+    .prev-quote-btn { padding: 12px 20px; }
+    .button { font-size: 0.85rem; }
+    .btn-row-utils { gap: 7px; }
+}
